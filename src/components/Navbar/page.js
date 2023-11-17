@@ -43,7 +43,7 @@ const NavbarAdmin = () => {
                                 <Avatar
                                     isBordered
                                     as="button"
-                                    className="transition-transform w-11 h-11"
+                                    className="transition-transform py-[0.3rem] object-cover bg-background-color w-11 h-11"
                                     color="secondary"
                                     name=""
                                     size="sm"
