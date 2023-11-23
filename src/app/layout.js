@@ -1,7 +1,7 @@
 import { Inter } from 'next/font/google'
 import './globals.css'
-import NavbarAdmin from "@/components/Navbar/page";
-
+import NextUI_Provider from "@/app/NextUiProvider";
+import SidebarAdmin from "@/components/Table/SidebarAdmin";
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -13,8 +13,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="bg-background-color">
-          <NavbarAdmin/>
-          {children}
+          <NextUI_Provider>
+              <SidebarAdmin/>
+              {children}
+          </NextUI_Provider>
       </body>
     </html>
   )
