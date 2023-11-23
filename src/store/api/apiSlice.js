@@ -38,9 +38,9 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
           // Retry the original query with the new access token
           result = await baseQuery(args, api, extraOptions);
         } else {
-          // Refreshing the token failed, log out the user
+          // Refreshing the token failed, log out the [user]
           api.dispatch(logout());
-          // Consider using a more user-friendly notification system than alert
+          // Consider using a more [user]-friendly notification system than alert
           console.error("Session expired. Please login again. 1");
         }
       } catch (error) {
