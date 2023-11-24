@@ -13,7 +13,7 @@
     "@nextui-org/react": "^2.2.9",
     "@react-stately/data": "^3.11.0",
     "@reduxjs/toolkit": "^1.9.7",
-    "antd": "^5.11.1",
+    "antd": "^5.11.3",
     "crypto-js": "^4.2.0",
     "framer-motion": "^10.16.5",
     "next": "14.0.2",

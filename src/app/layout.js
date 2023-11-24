@@ -15,7 +15,9 @@ export default function RootLayout({ children }) {
       <body className="bg-background-color">
           <NextUI_Provider>
               <SidebarAdmin/>
-              {children}
+              <div className='pl-[15%] py-14'>
+                {children}
+              </div>
           </NextUI_Provider>
       </body>
     </html>
