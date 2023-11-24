@@ -5,7 +5,6 @@ import SidebarAdmin from "@/components/Table/SidebarAdmin";
 
 const inter = Inter({subsets: ['latin']})
 import Providers from "@/store/Providers";
-import LoginForm from "@/components/Login";
 
 export const metadata = {
     title: 'Create Next App',
