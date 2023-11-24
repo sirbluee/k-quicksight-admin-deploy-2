@@ -17,90 +17,56 @@ export function encrypt(message, secretKey) {
 }
 
 // decrypt refresh token
+export function decrypt(ciphertext, secretKey) {
+  let plaintext = null;
+  try {
+    const bytes = CryptoJS.AES.decrypt(ciphertext, secretKey);
+    plaintext = bytes.toString(CryptoJS.enc.Utf8);
+  } catch (err) {
+    console.log("Decrypt secret key error", err);
+  }
+  return plaintext;
+}
 
 // store refresh token in secure local storage
-export function storeRefresh(refresh) {
-  try {
-    // Store 'username' in localStorage
-    secureLocalStorage.setItem(
+export function storeRefreshToken(refreshToken) {
+  localStorage.setItem("username", "admin");
+  secureLocalStorage.setItem(
       process.env.NEXT_PUBLIC_SECURE_LOCAL_STORAGE_PREFIX,
-      refresh
-    );
-    
-  } catch (e) {
-    // Log the error if any of the storage operations fail
-    console.error("Storage operation failed: ", e);
-  }
-}
-
-
-export function secureRefresh(refresh) {
-  const encryptedRefresh = encrypt(
-    refresh,
-    process.env.NEXT_PUBLIC_SECRET_KEY
+      refreshToken
   );
-  storeRefresh(encryptedRefresh);
 }
 
-
-export function decrypt(ciphertext, secretKey) {
-  try {
-    const bytes = CryptoJS.AES.decrypt(ciphertext.toString(), secretKey);
-    const plaintext = bytes.toString(CryptoJS.enc.Utf8);
-    if (plaintext === '') {
-      throw new Error('Decryption succeeded but returned an empty string.');
-    }
-    return plaintext;
-  } catch (err) {
-    console.error("Decrypt secret key error:", err);
-    throw err; // rethrow the error to handle it in the calling function
-  }
-}
-
-
-export async function getDecryptedRefresh() {
-  try {
-    const encryptedRefresh =  getRefresh();
-    if (!encryptedRefresh) {
-      console.error("Encrypted refresh token is empty.");
-      return null;
-    }
-    if (!process.env.NEXT_PUBLIC_SECRET_KEY) {
-      console.error("Secret key is undefined.");
-      return null;
-    }
-
-    const decryptedRefresh = decrypt(
-      encryptedRefresh,
-      process.env.NEXT_PUBLIC_SECRET_KEY
-    );
-
-    if (!decryptedRefresh) {
-      console.error("Decryption failed or returned an empty result.");
-      return null;
-    }
-
-    return decryptedRefresh;
-  } catch (error) {
-    console.error("An error occurred during decryption:", error);
-    return null;
-  }
-}
-
-
-export function getRefresh() {
-  const refresh = secureLocalStorage.getItem(    
-    process.env.NEXT_PUBLIC_SECURE_LOCAL_STORAGE_PREFIX
+// get refresh token from secure local storage
+export async function getRefreshToken() {
+  const refreshToken = secureLocalStorage.getItem(
+      process.env.NEXT_PUBLIC_SECURE_LOCAL_STORAGE_PREFIX
   );
-  if (typeof refresh === 'undefined') {
-    console.error("No refresh token found in secureLocalStorage.");
-  }
-  return refresh;
+  return refreshToken;
 }
 
-
-export function removeRefresh() {
+// remove refresh token from secure local storage
+export function removeRefreshToken() {
   secureLocalStorage.removeItem(
-    process.env.NEXT_PUBLIC_SECURE_LOCAL_STORAGE_PREFIX
+      process.env.NEXT_PUBLIC_SECURE_LOCAL_STORAGE_PREFIX
   );
+}
+
+// secure refresh token in secure local storage
+export function secureRefreshToken(refreshToken) {
+  const encryptedRefreshToken = encrypt(
+      refreshToken,
+      process.env.NEXT_PUBLIC_SECRET_KEY
+  );
+  storeRefreshToken(encryptedRefreshToken);
+}
+
+// get unencrypted refresh token from secure local storage
+export async function getDecryptedRefreshToken() {
+  const encryptedRefreshToken = await getRefreshToken();
+  const decryptedRefreshToken = decrypt(
+      encryptedRefreshToken,
+      process.env.NEXT_PUBLIC_SECRET_KEY
+  );
+  return decryptedRefreshToken;
 }

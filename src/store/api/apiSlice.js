@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { logout, setCredentials, setCurrentUser } from "../features/auth/authSlice";
-import { getRefresh,getDecryptedRefresh } from "@/lib/cryptography";
+import { getDecryptedRefreshToken } from "@/lib/cryptography";
 
 // create base query with authentication
 const baseQuery = fetchBaseQuery({
@@ -14,50 +14,50 @@ const baseQuery = fetchBaseQuery({
     return headers;
   },
 });
+
+// custom base query with re-authentication when token expires
 const baseQueryWithReAuth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
   if (result?.error?.status === 401) {
-    // Attempt to get a new access token using the refresh token
-    const refresh = await getDecryptedRefresh();
-    if (refresh) {
+    const refreshToken = await getDecryptedRefreshToken();
+    console.log("resfreshToken in apiSlice", refreshToken);
+    if (refreshToken) {
       try {
-        // Try refreshing the token
-        const refreshResult = await baseQuery(
-          {
-            url: '/accounts/token/refresh/',
-            method: 'POST',
-            body: { refresh },
-          },
-          api,
-          extraOptions
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/accounts/token/refresh/`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ refreshToken }),
+            }
         );
-        // Check if the refresh was successful
-        if (refreshResult?.data) {
-          // Dispatch the new credentials to the store
-          api.dispatch(setCredentials(refreshResult.data));
-          // Retry the original query with the new access token
+        const resultResponse = await response.json();
+        console.log("response", resultResponse);
+
+        if (resultResponse.code === 200) {
+          api.dispatch(setCredentials(resultResponse.data));
+
+
           result = await baseQuery(args, api, extraOptions);
-        } else {
-          // Refreshing the token failed, log out the [user]
+        } else if (resultResponse.code === 401) {
           api.dispatch(logout());
-          // Consider using a more [user]-friendly notification system than alert
-          console.error("Session expired. Please login again. 1");
+          alert("Your session has expired. Please login again.");
         }
       } catch (error) {
         console.error("Failed to refresh access token", error);
+
         api.dispatch(logout());
       }
     } else {
       api.dispatch(logout());
-      console.error("Session expired. Please login again. 2");
+      alert("Your session has expired. Please login again.");
     }
   }
   return result;
 };
-
 // create api slice with custom base query
 export const apiSlice = createApi({
   baseQuery: baseQueryWithReAuth,
-  tagTypes: ["User", "UploadSingle"], // tagTypes are used for cache invalidation
+  tagTypes: ["User"], // tagTypes are used for cache invalidation
   endpoints: (builder) => ({}),
 });
