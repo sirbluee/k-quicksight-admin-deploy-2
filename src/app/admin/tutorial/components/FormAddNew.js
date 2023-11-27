@@ -11,6 +11,7 @@ import {
 } from "formik";
 import Image from "next/image";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useCreateTutorialMutation } from "@/store/features/tutorials/tutorialApiSlice";
 import * as Yup from "yup";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
@@ -46,12 +47,16 @@ const SUPPORTED_FORMATS = [
 ];
 
 const FormAddNew = ({ closeModal, userId }) => {
+
+  const [createTutorial, { isLoading: submitting }] =
+    useCreateTutorialMutation();
+
   const [loading, setLoading] = useState(false);
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
   const [editorData, setEditorData] = useState(); //ckeditor data
   const [editorLoaded, setEditorLoaded] = useState(false);
   const [tutorial, setTutorial] = useState({});
-
+  const [filename, setFileName] = useState(null);
   // console.log(user, "current user");
   const editorRef = useRef();
   const { CKEditor, DecoupledEditor } = editorRef.current || {};
@@ -92,26 +97,50 @@ const FormAddNew = ({ closeModal, userId }) => {
     setLoading(false);
   };
 
+  async function handleUploadThumbnail(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const requestOptions = {
+      method: 'POST',
+      body: formData,
+      redirect: 'follow'
+    };
+
+    try {
+      const response = await fetch("http://136.228.158.126:8002/api/v1/files/upload/images/", requestOptions);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      return data.filename
+      return;
+    } catch (error) {
+      console.error('Upload failed:', error);
+      throw error; // Rethrow the error for further handling
+    }
+  }
+
 
   const handleSubmit = async (values) => {
-    setLoading(true);
-    let myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    let raw = JSON.stringify({
-      name: values.name,
-      description: values.description,
-      thumbnail: values.thumbnail,
-      createdBy: userId,
-      htmlContent: editorData,
+    // create tutorial
+    const thumbnail = await handleUploadThumbnail(values.file)
+    var raw = JSON.stringify({
+      "title": values.name,
+      "content": editorData,
+      "thumbnail": thumbnail,
+      "description": values.description,
+      "published_by": 26
     });
     try {
-      await createTutorial(raw).unwrap();
+      console.log(raw)
+      await createTutorial({ data: raw }).unwrap();
+      console.log("respone : ", res)
       setEditorData("");
     } catch (error) {
       console.log(error, "error");
       setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -123,10 +152,6 @@ const FormAddNew = ({ closeModal, userId }) => {
     <>
       {loading && <Loading />}
       <div className="bg-white dark:bg-secondary w-full mx-auto">
-        <h2 className="text-start text-3xl  mb-5  text-light dark:text-white font-bold">
-          Create New Tutorial
-        </h2>
-
         <Formik
           enableReinitialize={true}
           initialValues={{
@@ -139,14 +164,9 @@ const FormAddNew = ({ closeModal, userId }) => {
           }}
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
-            console.log(values)
             setLoading(true);
             const formData = new FormData();
             formData.append("file", values.file);
-            const avatar = await uploadImageHandler({ file: formData });
-            const imageid = await insertImgToDB(avatar);
-
-            values.thumbnail = imageid;
 
             handleSubmit(values);
             // alert(JSON.stringify(values, null, 2))
@@ -286,7 +306,7 @@ const FormAddNew = ({ closeModal, userId }) => {
                     <PiFloppyDiskLight className="inline text-xl text-white font-black mr-1.5 " />{" "}
                     Save
                   </button>
-                 
+
                 </div>
               </Form>
             </>

@@ -1,356 +1,212 @@
 'use client'
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useGetTutorialsQuery, useDeleteTutorialsMutation } from "@/store/features/tutorials/tutorialApiSlice";
+import { CircularProgress } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/react";
-import FormAddNew from "@/app/admin/tutorial/components/FormAddNew";
-import {
-    Table,
-    TableHeader,
-    TableColumn,
-    TableBody,
-    TableRow,
-    TableCell,
-    Input,
-    Button,
-    DropdownTrigger,
-    Dropdown,
-    DropdownMenu,
-    DropdownItem,
-    Chip,
-    User,
-    Pagination,
-} from "@nextui-org/react";
+import { toast, ToastContainer } from "react-toastify";
+import ModalAddNew from "@/app/admin/tutorial/components/ModalAddNew";
+import { Pagination } from "@nextui-org/react";
+import { Select, SelectItem } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
+import { FiSearch } from "react-icons/fi";
+import { IoIosAddCircleOutline } from "react-icons/io";
 
-import { FiChevronDown, FiMoreVertical, FiPlus, FiSearch } from "react-icons/fi";
+export default function TutorialsTable() {
 
-const statusColorMap = {
-    active: "success",
-    paused: "danger",
-    vacation: "warning",
-};
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [backdrop, setBackdrop] = React.useState('opaque')
+    const [deleteId, setDeleteId] = React.useState(null)
+    const [isDeleteModalTutorialOpen, setDeleteModalTutorial] = useState(false);
 
-const INITIAL_VISIBLE_COLUMNS = ["name", "role", "created_at", "status", "actions"];
-
-export default function TutorialTable() {
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
-    const columns = [
-        { name: "CREATED_BY", uid: "name", sortable: true },
-        { name: "TITLE", uid: "name", sortable: true },
-        { name: "Description", uid: "name", sortable: true },
-        { name: "STATUS", uid: "status", sortable: true },
-        { name: "CREATED_AT", uid: "created_at", sortable: true },
-        { name: "ACTIONS", uid: "actions" },
-    ];
-    const statusOptions = [
-        { name: "Active", uid: "active" },
-        { name: "Paused", uid: "paused" },
-        { name: "Vacation", uid: "vacation" },
-    ];
-    const users = [
-        {
-            id: 1,
-            name: "Tony Reichert",
-            role: "CEO",
-            team: "Management",
-            status: "active",
-            created_at: "2015-10-20",
-            age: "29",
-            avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-            email: "tony.reichert@example.com",
-        },
-        {
-            id: 1,
-            name: "Sobon",
-            role: "CEO",
-            team: "Management",
-            status: "active",
-            created_at: "2015-10-20",
-
-            age: "29",
-            avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-            email: "tony.reichert@example.com",
-        },
-        {
-            id: 1,
-            name: "Tony Reichert",
-            role: "CEO",
-            team: "Management",
-            status: "active",
-            created_at: "2015-10-20",
-
-            age: "29",
-            avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-            email: "tony.reichert@example.com",
-        },
-        {
-            id: 1,
-            name: "Sorn Sophearum",
-            role: "CEO",
-            team: "Management",
-            created_at: "2015-10-20",
-            status: "active",
-            age: "29",
-            avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-            email: "tony.reichert@example.com",
-        },
-    ];
-
-    const [filterValue, setFilterValue] = React.useState("");
-    const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
-    const [visibleColumns, setVisibleColumns] = React.useState(new Set(INITIAL_VISIBLE_COLUMNS));
-    const [statusFilter, setStatusFilter] = React.useState("all");
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
-    const [sortDescriptor, setSortDescriptor] = React.useState({
-        column: "age",
-        direction: "ascending",
-    });
-    const [page, setPage] = React.useState(1);
-    const pages = Math.ceil(users.length / rowsPerPage);
-    const hasSearchFilter = Boolean(filterValue);
-    const headerColumns = React.useMemo(() => {
-        if (visibleColumns === "all") return columns;
-
-        return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
-    }, [visibleColumns]);
-
-    const filteredItems = React.useMemo(() => {
-        let filteredUsers = [...users];
-
-        if (hasSearchFilter) {
-            filteredUsers = filteredUsers.filter((user) =>
-                user.name.toLowerCase().includes(filterValue.toLowerCase()),
-            );
-        }
-        if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
-            filteredUsers = filteredUsers.filter((user) =>
-                Array.from(statusFilter).includes(user.status),
-            );
-        }
-
-        return filteredUsers;
-    }, [users, filterValue, statusFilter]);
-
-    const items = React.useMemo(() => {
-        const start = (page - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-
-        return filteredItems.slice(start, end);
-    }, [page, filteredItems, rowsPerPage]);
-
-    const sortedItems = React.useMemo(() => {
-        return [...items].sort((a, b) => {
-            const first = a[sortDescriptor.column];
-            const second = b[sortDescriptor.column];
-            const cmp = first < second ? -1 : first > second ? 1 : 0;
-
-            return sortDescriptor.direction === "descending" ? -cmp : cmp;
-        });
-    }, [sortDescriptor, items]);
-    const handleAddNew = () => {
-        alert("Add new")
+    const handleOpen = (backdrop, id) => {
+        setDeleteId(id);
+        setBackdrop(backdrop)
+        onOpen();
     }
-    const renderCell = React.useCallback((user, columnKey) => {
-        const cellValue = user[columnKey];
 
-        switch (columnKey) {
-            case "Title":
-                return (
-                    <p
-                    >
-                        {user.email}
-                    </p>
-                );
-            case "Description":
-                return (
-                    <div className="flex flex-col">
-                        <p className="text-bold text-small capitalize">{cellValue}</p>
-                    </div>
-                );
-            case "Created At":
-                return (
-                    <div className="flex flex-col">
-                        <p className="text-bold text-small capitalize">{cellValue}</p>
-                    </div>
-                );
-            case "status":
-                return (
-                    <Chip
-                        className="capitalize border-none gap-1 text-default-600"
-                        color={statusColorMap[user.status]}
-                        size="sm"
-                        variant="dot"
-                    >
-                        {cellValue}
-                    </Chip>
-                );
-            case "actions":
-                return (
-                    <div className="relative flex justify-end items-center gap-2">
-                        <Dropdown className="bg-background border-1 border-default-200">
-                            <DropdownTrigger>
-                                <Button isIconOnly radius="full" size="sm" variant="light">
-                                    <FiMoreVertical className="text-default-400" />
-                                </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu>
-                                <DropdownItem>View</DropdownItem>
-                                <DropdownItem>Edit</DropdownItem>
-                                <DropdownItem>Delete</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
-                    </div>
-                );
-            default:
-                return cellValue;
-        }
-    }, []);
+    const [page, setPage] = useState(1);
+    const [size, setSize] = useState(10);
+    const [title, setTitle] = useState("");
 
-    const onRowsPerPageChange = React.useCallback((e) => {
-        setRowsPerPage(Number(e.target.value));
-        setPage(1);
-    }, []);
+    const {
+        data: tutorials,
+        isLoading,
+        isError,
+        isSuccess,
+    } = useGetTutorialsQuery({ page, size, title });
+
+    const [deleteTutorial,
+        { isLoading: isLoadingDeleteTutorials,
+            isError: isDeleteError,
+            isSuccess: isSuccessDeleteTutorial
+        }] = useDeleteTutorialsMutation();
 
 
-    const onSearchChange = React.useCallback((value) => {
-        if (value) {
-            setFilterValue(value);
-            setPage(1);
-        } else {
-            setFilterValue("");
-        }
-    }, []);
 
-    const topContent = React.useMemo(() => {
-        return (
-            <div className="flex flex-col gap-4">
-                <div className="flex justify-between gap-3 items-end">
-                    <Input
-                        isClearable
-                        classNames={{
-                            base: "w-full sm:max-w-[44%]",
-                            inputWrapper: "border-1",
-                        }}
-                        placeholder="Search by name..."
-                        size="sm"
-                        startContent={<FiSearch className="text-default-300" />}
-                        value={filterValue}
-                        variant="bordered"
-                        onClear={() => setFilterValue("")}
-                        onValueChange={onSearchChange}
-                    />
-                    <div className="flex gap-3">
+    if (isLoading || isLoadingDeleteTutorials) {
+        return <h1>Loading</h1>
+    }
+    if (isError) {
+        return <h1>Error</h1>
+    }
 
-                        <Button
-                            className="bg-foreground text-background"
-                            endContent={<FiPlus />}
-                            size="sm"
-                            onPress={onOpen}
-                        >
-                            Add New
-                        </Button>
-                    </div>
-                </div>
+    const handlePageChange = (page) => {
+        setPage(page);
+    }
 
-            </div>
-        );
-    }, [
-        filterValue,
-        statusFilter,
-        visibleColumns,
-        onSearchChange,
-        onRowsPerPageChange,
-        users.length,
-        hasSearchFilter,
-    ]);
+    const handleSetPage = (size) => {
+        setSize(size.target.value)
+    }
 
-    const bottomContent = React.useMemo(() => {
-        return (
-            <div className="py-2 px-2 flex justify-between items-center">
-                <Pagination
-                    showControls
-                    classNames={{
-                        cursor: "bg-foreground text-background",
-                    }}
-                    color="default"
-                    isDisabled={hasSearchFilter}
-                    page={page}
-                    total={pages}
-                    variant="light"
-                    onChange={setPage}
-                />
-                <span className="text-small text-default-400">
-                    {selectedKeys === "all"
-                        ? "All items selected"
-                        : `${selectedKeys.size} of ${items.length} selected`}
-                </span>
-            </div>
-        );
-    }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
+    const handleChangeTitle = (title) => {
+        setTitle(title.target.value)
+    }
+    const handleDeleteTutorial = async () => {
+        await deleteTutorial(deleteId);
+    }
 
-    const classNames = React.useMemo(
-        () => ({
-            wrapper: ["max-h-[382px]", "max-w-3xl"],
-            th: ["bg-transparent", "text-default-500", "border-b", "border-divider"],
-            td: [
-                "group-data-[first=true]:first:before:rounded-none",
-                "group-data-[first=true]:last:before:rounded-none",
-                "group-data-[middle=true]:before:rounded-none",
-                "group-data-[last=true]:first:before:rounded-none",
-                "group-data-[last=true]:last:before:rounded-none",
-            ],
-        }),
-        [],
-    );
 
     return (
         <>
-            <Table
-                isCompact
-                removeWrapper
-                aria-label="Example table with custom cells, pagination and sorting"
-                bottomContent={bottomContent}
-                bottomContentPlacement="outside"
-                checkboxesProps={{
-                    classNames: {
-                        wrapper: "after:bg-foreground after:text-background text-background",
-                    },
-                }}
-                classNames={classNames}
-                sortDescriptor={sortDescriptor}
-                topContent={topContent}
-                topContentPlacement="outside"
-                onSelectionChange={setSelectedKeys}
-                onSortChange={setSortDescriptor}
-            >
-                <TableHeader columns={headerColumns}>
-                    {(column) => (
-                        <TableColumn
-                            key={column.uid}
-                            align={column.uid === "actions" ? "center" : "start"}
-                            allowsSorting={column.sortable}
-                        >
-                            {column.name}
-                        </TableColumn>
-                    )}
-                </TableHeader>
-                <TableBody emptyContent={"No users found"} items={sortedItems}>
-                    {(item) => (
-                        <TableRow key={item.id}>
-                            {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
-                        </TableRow>
-                    )}
-                </TableBody>
-            </Table>
-
-
-            {/* modal */}
-            <Modal size="5xl" isOpen={isOpen} onOpenChange={onOpenChange}>
+            {/* delete modal */}
+            <Modal backdrop={backdrop} isOpen={isOpen} onClose={onClose}>
                 <ModalContent>
-                    <ModalBody>
-                        <FormAddNew />
-                    </ModalBody>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
+                            <ModalBody>
+
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color="danger" variant="light" onPress={onClose}>
+                                    Close
+                                </Button>
+                                <Button color="danger" onPress={onClose} onClick={() => handleDeleteTutorial()}
+                                >
+                                    Delete
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
                 </ModalContent>
             </Modal>
+            {/* inser modal */}
+            <div className="rounded-2xl flex items-center justify-between w-full mb-5 ">
+                <Input
+                    label="Search"
+                    isClearable
+                    onChange={handleChangeTitle}
+                    radius="lg"
+                    classNames={{
+                        label: "text-black/50 dark:text-white/90",
+                        input: [
+                            "bg-transparent",
+                            "text-black/90 dark:text-white/90",
+                            "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+                        ],
+                        innerWrapper: "bg-transparent",
+                        inputWrapper: [
+                            "shadow-xl",
+                            "bg-default-200/50",
+                            "dark:bg-default/60",
+                            "backdrop-blur-xl",
+                            "backdrop-saturate-200",
+                            "hover:bg-default-200/70",
+                            "dark:hover:bg-default/70",
+                            "group-data-[focused=true]:bg-default-200/50",
+                            "dark:group-data-[focused=true]:bg-default/60",
+                            "!cursor-text",
+                            "w-80"
+                        ],
+                    }}
+                    placeholder="Type to search..."
+                    startContent={
+                        <FiSearch className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
+                    }
+                />
+                <div className="flex gap-4 items-center">
+                    <ModalAddNew />
+                </div>
+
+            </div>
+            <Table aria-label="Example static collection table">
+                <TableHeader>
+                    <TableColumn>TITLE</TableColumn>
+                    <TableColumn>DESCRIPTION</TableColumn>
+                    <TableColumn>CREATED_BY</TableColumn>
+                    <TableColumn>CREATED_AT</TableColumn>
+                    <TableColumn>STATUS</TableColumn>
+                    <TableColumn>ACTIONS</TableColumn>
+
+                </TableHeader>
+                <TableBody>
+                    {tutorials?.results.map((item, index) =>
+                    (
+                        <TableRow key={index}>
+                            <TableCell>{item.title}</TableCell>
+                            <TableCell>{item.published_by.username}</TableCell>
+                            <TableCell>{item.published_by.username}</TableCell>
+                            <TableCell>{item.created_at}</TableCell>
+                            <TableCell>{item.is_deleted.toString()}</TableCell>
+                            <TableCell>
+                                <Dropdown >
+                                    <DropdownTrigger>
+                                        <Button
+                                            variant="bordered"
+                                        >
+                                            Action
+                                        </Button>
+                                    </DropdownTrigger>
+                                    <DropdownMenu aria-label="Example with disabled actions" >
+                                        <DropdownItem key="update">UPDATE</DropdownItem>
+                                        <DropdownItem
+                                            className="text-danger"
+                                            color="danger"
+                                            onPress={() => handleOpen("blur", item.id)}
+                                            key={"blur"}
+                                        >
+                                            DELETE
+                                        </DropdownItem>
+
+                                    </DropdownMenu>
+                                </Dropdown>
+                            </TableCell>
+                        </TableRow>
+                    )
+                    )}
+
+                </TableBody>
+            </Table>
+            <div className="flex w-auto justify-center items-center mt-5">
+
+                <Pagination
+                    className=""
+                    isCompact
+                    showControls total={tutorials.pages.length}
+                    initialPage={page}
+                    onChange={handlePageChange}
+                />
+                <Select labelPlacement="1" className="max-w-xs w-28 ml-14" onChange={handleSetPage}>
+                    <SelectItem key="10" value={10} defaultSelected>
+                        10
+                    </SelectItem>
+                    <SelectItem key="20" value={20}>
+                        20
+                    </SelectItem>
+                    <SelectItem key="30" value={30}>
+                        30
+                    </SelectItem>
+                    <SelectItem key="40" value={40}>
+                        40
+                    </SelectItem>
+                    <SelectItem key="50" value={50}>
+                        50
+                    </SelectItem>
+                </Select>
+            </div>
+
         </>
-    );
+    )
 }
