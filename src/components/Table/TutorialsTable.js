@@ -12,9 +12,8 @@ import { Select, SelectItem } from "@nextui-org/react";
 import { Input } from "@nextui-org/react";
 import { FiSearch } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
-import { FaRegEdit } from "react-icons/fa";
 import { CiCircleRemove } from "react-icons/ci";
-
+import ModalUpdateTutorial from "@/app/admin/tutorial/components/ModalUpdateTutorial";
 import moment from "moment";
 
 
@@ -172,9 +171,7 @@ export default function TutorialsTable() {
                                 {moment(item.created_at).format("YYYY-MM-DD")}
                             </TableCell>
                             <TableCell>
-                                <Button color="success" variant="bordered"  >
-                                    <FaRegEdit />
-                                </Button>
+                                <ModalUpdateTutorial tutorialId={item.id}/>
                                 <Button color="danger" className="ml-4" variant="bordered" onPress={() => handleOpen("blur", item.id)}
                                      >
                                     <MdDelete />
