@@ -23,7 +23,6 @@ export default function TutorialsTable() {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [backdrop, setBackdrop] = React.useState('opaque')
     const [deleteId, setDeleteId] = React.useState(null)
-    const [isDeleteModalTutorialOpen, setDeleteModalTutorial] = useState(false);
 
     const handleOpen = (backdrop, id) => {
         console.log("id: ", id);
@@ -43,8 +42,8 @@ export default function TutorialsTable() {
         isSuccess,
     } = useGetTutorialsQuery({ page, size, title });
 
-    const [deleteTutorial,
-        { isLoading: isLoadingDeleteTutorials,
+    const [deleteTutorial,{ 
+            isLoading: isLoadingDeleteTutorials,
             isError: isDeleteError,
             isSuccess: isSuccessDeleteTutorial
         }] = useDeleteTutorialsMutation();
@@ -63,12 +62,14 @@ export default function TutorialsTable() {
     }
 
     const handleSetPage = (size) => {
+        console.log(size.target.value)
         setSize(size.target.value)
     }
 
     const handleChangeTitle = (title) => {
         setTitle(title.target.value)
     }
+
     const handleDeleteTutorial = async () => {
         await deleteTutorial(deleteId);
         toast.success("Delete Tutorial Success!");
@@ -171,11 +172,11 @@ export default function TutorialsTable() {
                                 {moment(item.created_at).format("YYYY-MM-DD")}
                             </TableCell>
                             <TableCell>
-                                <Button color="success" variant="bordered" key={"blur"} >
+                                <Button color="success" variant="bordered"  >
                                     <FaRegEdit />
                                 </Button>
                                 <Button color="danger" className="ml-4" variant="bordered" onPress={() => handleOpen("blur", item.id)}
-                                    key={"blur"} >
+                                     >
                                     <MdDelete />
                                 </Button>
                                

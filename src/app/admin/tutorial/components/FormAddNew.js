@@ -9,6 +9,8 @@ import {
   useField,
   useFormikContext,
 } from "formik";
+import { Input } from "@nextui-org/react";
+
 import Image from "next/image";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useCreateTutorialMutation } from "@/store/features/tutorials/tutorialApiSlice";
@@ -79,7 +81,49 @@ const FormAddNew = ({ closeModal, userId }) => {
     return false;
   }, []);
 
+  class MyUploadAdapter {
+    constructor(loader) {
+      this.loader = loader;
+    }
 
+    upload() {
+      return this.loader.file.then(
+        (file) =>
+          new Promise((resolve, reject) => {
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            fetch("https://photostad-api.istad.co/api/v1/files/upload/images/", {
+              method: "POST",
+              body: formData,
+            })
+              .then((response) => {
+                if (response.ok) {
+                  response.json().then((data) => {
+                    // console.log(data, "data upload image");
+                    console.log(data?.url)
+                    const url = data?.url;
+
+                    resolve({ default: url });
+                  });
+                } else {
+                  reject(response.statusText);
+                }
+                // console.log(response, "response upload image");
+              })
+              .catch((error) => {
+                reject(error);
+                console.log(error, "error upload image");
+              });
+          })
+      );
+    }
+
+    abort() {
+      // Abort upload logic here
+    }
+  }
 
   const uploadImageHandler = async (values) => {
     setLoading(true);
@@ -239,7 +283,7 @@ const FormAddNew = ({ closeModal, userId }) => {
                             // Upload the images to the server using the CKFinder QuickUpload command
                             // You have to change this address to your server that has the ckfinder php connector
                             uploadUrl:
-                              " https://photostad-api.istad.co/api/v1/files", //Enter your upload url
+                              "https://photostad-api.istad.co/api/v1/files/upload/images/", //Enter your upload url
                           },
                           placeholder: "Write your tutorial content here!",
                           // Automatic Editor Height Adjustment to Content
@@ -250,11 +294,15 @@ const FormAddNew = ({ closeModal, userId }) => {
                         //create upload adapter to send image to server in Ckeditor
                         onReady={(editor) => {
                           const editableElement = editor.ui.getEditableElement();
-                          if (editableElement && editableElement.parentElement) {
+                          if (editableElement) {
                             editableElement.parentElement.insertBefore(
                               editor.ui.view.toolbar.element,
                               editableElement
                             );
+
+                            editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+                              return new MyUploadAdapter(loader);
+                            };
                           }
                         }}
                         shoulComponentUpdate={shoulComponentUpdate}
@@ -361,48 +409,6 @@ function CustomInput({ field, form, isSubmitting, ...props }) {
   );
 }
 
-class MyUploadAdapter {
-  constructor(loader) {
-    this.loader = loader;
-  }
 
-  upload() {
-    return this.loader.file.then(
-      (file) =>
-        new Promise((resolve, reject) => {
-          // Your upload logic here
-          // Example using fetch:
-          const formData = new FormData();
-          formData.append("file", file);
-
-          fetch("https://photostad-api.istad.co/api/v1/files", {
-            method: "POST",
-            body: formData,
-          })
-            .then((response) => {
-              if (response.ok) {
-                response.json().then((data) => {
-                  // console.log(data, "data upload image");
-                  const url = data?.data?.url;
-
-                  resolve({ default: url });
-                });
-              } else {
-                reject(response.statusText);
-              }
-              // console.log(response, "response upload image");
-            })
-            .catch((error) => {
-              reject(error);
-              console.log(error, "error upload image");
-            });
-        })
-    );
-  }
-
-  abort() {
-    // Abort upload logic here
-  }
-}
 
 export default FormAddNew;
