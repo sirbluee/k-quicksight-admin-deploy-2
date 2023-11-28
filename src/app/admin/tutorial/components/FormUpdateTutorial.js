@@ -3,15 +3,15 @@
 
 
 import { useGetTutorialByIdQuery, useUpdateTutorialMutation } from "@/store/features/tutorials/tutorialApiSlice";
-import axios from "axios";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import Image from "next/image";
 import React, { use, useEffect, useRef, useState } from "react";
 import * as Yup from "yup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { PiFloppyDiskLight } from "react-icons/pi";
 import Loading from "./Loading";
+import { useGetUserQuery } from "@/store/features/user/userApiSlice";
+
 const validationSchema = Yup.object({
     name: Yup.string().required("Name is required"),
     description: Yup.string().required("Description is required"),
@@ -44,15 +44,14 @@ const UpdateForm = ({
     tutorialId,
     closeModal,
 }) => {
-    console.log(tutorialId)
     const { data, isLoading: processing, error } = useGetTutorialByIdQuery(tutorialId);
+
+
     const tutorialById = data;
-    const [imgId, setImgId] = useState(0);
     const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
     const [editorData, setEditorData] = useState(data?.content); //ckeditor data
     const [editorLoaded, setEditorLoaded] = useState(false);
     const [tutorial, setTutorial] = useState({});
-    const [isChange, setIsChange] = useState(false);
     const [imgName, setImgName] = useState(""); // for upload image to db
     const [preview, setPreview] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -60,7 +59,6 @@ const UpdateForm = ({
     /** ckeditor goes here  */
     const editorRef = useRef();
     const { CKEditor, DecoupledEditor } = editorRef.current || {};
-    const [file, setFile] = useState(null); // State to store the selected file
     useEffect(() => {
         editorRef.current = {
             CKEditor: require("@ckeditor/ckeditor5-react").CKEditor,
@@ -78,7 +76,7 @@ const UpdateForm = ({
     }, [tutorialById]);
 
     useEffect(() => {
-        setPreview(tutorial?.thumbnail?.name);
+        setPreview(tutorial?.thumbnail);
     }, []);
 
     const [updateTutorial, { isLoading: isSubmitting, isSuccess }] =
@@ -92,44 +90,22 @@ const UpdateForm = ({
             .replace(/^-+|-+$/g, "");
     }
 
-    const insertImgToDB = async (img) => {
-        let myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        let raw = JSON.stringify({
-            name: img,
-            type: "user",
-        });
 
-        let requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            body: raw,
-            redirect: "follow",
-        };
-        try {
-            const respone = await fetch(`${BASE_URL}/images`, requestOptions);
-            const responeData = await respone.json();
-            const imgId = responeData.data.id;
-            setImgId(imgId);
-            return imgId || 4;
-        } catch (error) {
-            // console.log("error : " + error);
-        }
-    };
 
     const handleSubmit = async (values) => {
+
         setIsLoading(true);
         let raw = JSON.stringify({
             title: values.name,
-            name: values.name,
             slug: stringToSlug(values.description),
             description: values.description,
             thumbnail: values.thumbnail, //refer to imgId
-            htmlContent: editorData,
+            content: editorData,
+            published_by: data?.published_by?.id
         });
 
         try {
-            const respone = await updateTutorial({ id: id, data: raw }).unwrap();
+            const respone = await updateTutorial({ id: data?.published_by?.id, data: raw }).unwrap();
             setTimeout(() => {
                 toast.success(respone.message, {
                     position: "top-right",
@@ -148,7 +124,7 @@ const UpdateForm = ({
             setTimeout(() => {
                 if (error.status === 400) {
                     // Bad Request error
-                    const errorMessage = error.data.errors[0].message;
+                    const errorMessage = error?.data?.errors[0]?.message;
                     toast.error(errorMessage, {
                         position: "top-right",
                         autoClose: 2000,
@@ -199,9 +175,12 @@ const UpdateForm = ({
     };
 
     const handleUploadImage = async (file) => {
+
         try {
+
             var formdata = new FormData();
             formdata.append("file", file.target.files[0]);
+
             var requestOptions = {
                 method: "POST",
                 body: formdata,
@@ -209,14 +188,16 @@ const UpdateForm = ({
             };
 
             const response = await fetch(
-                "https://photostad-api.istad.co/api/v1/files",
+                "https://photostad-api.istad.co/api/v1/files/upload/images/",
                 requestOptions
             );
 
             const res = await response.json();
-            const result = await res.data.name;
+            const result = await res?.filename;
+
             setImgName(result);
             setPreview(result);
+
             setTimeout(() => {
                 toast.success("File uploaded successfully: ", result, {
                     position: "top-right",
@@ -286,19 +267,20 @@ const UpdateForm = ({
                         name: tutorial?.title,
                         description: tutorial?.description,
                         thumbnail: tutorial?.thumbnail,
-                        htmlContent: tutorial?.content,
+                        content: tutorial?.content,
                         image: tutorial?.thumbnail,
                         file: undefined,
                     }}
                     validationSchema={validationSchema}
                     onSubmit={async (values, { setSubmitting, resetForm }) => {
-                        const imageid = await insertImgToDB(preview);
-                        values.thumbnail = imageid;
 
+                        console.log(values);
 
-                        if (values.thumbnail == undefined) {
-                            values.thumbnail = tutorialById.thumbnail.id;
+                        if (values.thumbnail === undefined || values.thumbnail === '') {
+                            values.thumbnail = tutorialById.thumbnail;
                         }
+
+                        console.log(values)
                         handleSubmit(values);
                         setSubmitting(false);
                         resetForm();
@@ -406,9 +388,7 @@ const UpdateForm = ({
                                                 },
                                                 ckfinder: {
 
-                                                    // Upload the images to the server using the CKFinder QuickUpload command
-                                                    // You have to change this address to your server that has the ckfinder php connector
-                                                    uploadUrl: " https://photostad-api.istad.co/api/v1/files", //Enter your upload url
+                                                    uploadUrl: "https://photostad-api.istad.co/api/v1/files/upload/images/", //Enter your upload url
                                                 },
                                             }}
                                             //create upload adapter to send image to server in Ckeditor

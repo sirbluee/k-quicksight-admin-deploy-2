@@ -3,7 +3,7 @@ import { apiSlice } from "@/store/api/apiSlice";
 export const userApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getUser: builder.query({
-            query: () => `/auth/me`,
+            query: () => `/accounts/me/`,
             keepUnusedDataFor: 5, // keep unused data in cache for 5 seconds
             providesTags: ["User"], // provideTags are used for updating cache
         }),
