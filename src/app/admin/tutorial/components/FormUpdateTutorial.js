@@ -259,8 +259,7 @@ const UpdateForm = ({
     return (
         <>
             {isLoading && <Loading />}
-            <div className="bg-white dark:bg-secondary  w-full">
-
+            <div className="bg-white dark:bg-secondary w-full h-[600px] overflow-y-scroll">
                 <Formik
                     enableReinitialize={true}
                     initialValues={{
@@ -298,7 +297,7 @@ const UpdateForm = ({
                                         type="text"
                                         name="name"
                                         value={values.name}
-                                        onChange={(e) => handleInputChange(e)}
+                                        // onChange={(e) => handleInputChange(e)}
                                         className="bg-white border border-gray-300 text-gray-900 text-sm rounded-main focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         placeholder="John"
                                     />
