@@ -45,7 +45,7 @@ const UpdateForm = ({
     closeModal,
 }) => {
     const { data, isLoading: processing, error } = useGetTutorialByIdQuery(tutorialId);
-
+    console.log(tutorialId)
 
     const tutorialById = data;
     const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -105,7 +105,7 @@ const UpdateForm = ({
         });
 
         try {
-            const respone = await updateTutorial({ id: data?.published_by?.id, data: raw }).unwrap();
+            const respone = await updateTutorial({ id: tutorialId, data: raw }).unwrap();
             setTimeout(() => {
                 toast.success(respone.message, {
                     position: "top-right",
