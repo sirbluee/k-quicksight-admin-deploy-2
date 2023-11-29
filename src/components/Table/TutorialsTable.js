@@ -47,15 +47,6 @@ export default function TutorialsTable() {
             isSuccess: isSuccessDeleteTutorial
         }] = useDeleteTutorialsMutation();
 
-
-
-    if (isLoading || isLoadingDeleteTutorials) {
-        return <h1>Loading</h1>
-    }
-    if (isError) {
-        return <h1>Error</h1>
-    }
-
     const handlePageChange = (page) => {
         setPage(page);
     }
@@ -189,7 +180,7 @@ export default function TutorialsTable() {
                 <Pagination
                     className=""
                     isCompact
-                    showControls total={tutorials.pages.length}
+                    showControls total={tutorials?.pages?.length}
                     initialPage={page}
                     onChange={handlePageChange}
                 />

@@ -48,6 +48,7 @@ export default function FormLogin() {
             dispatch(
                 setCredentials(data)
             );
+
         } catch (error) {
             if (error?.data?.detail) {
                 toast.error(error?.data?.detail);
@@ -55,7 +56,6 @@ export default function FormLogin() {
             }
             if (!error.response) {
                 alert("No Server Response");
-                console.log(error)
             } else if (error.response.status === 400) {
                 alert("Missing email or password");
             } else if (error.response.status === 403) {
@@ -73,29 +73,28 @@ export default function FormLogin() {
             redirect: 'follow'
         };
 
-        fetch(process.env.NEXT_PUBLIC_BASE_URL + "/accounts/me/", requestOptions)
+        fetch(process.env.NEXT_PUBLIC_BASE_URL + "accounts/me/", requestOptions)
             .then(response => response.json())
             .then(result => {
                 const roles = result?.data?.roles;
+                console.log(result)
                 if (roles) {
                     for (const role of roles) {
                         switch (role.name) {
                             case "admin":
-                                router.push("/admin/tutorial");
+                                router.push("/admin/dashboard")
                                 break;
                             case "subscriber":
                                 toast.warn("You don't have permission to access");
                                 break;
                             default:
-                                toast.warn("Unknown role: You don't have permission to access");
+                                toast.error("Unknown role: You don't have permission to access");
                                 break;
                         }
                     }
                 } else {
                     toast.error("Unable to determine your roles");
                 }
-
-
             })
             .catch(error => console.log('error', error));
     }
