@@ -7,7 +7,7 @@ const baseQuery = fetchBaseQuery({
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.access;
-    headers.set("content-type", "application/json");
+    // headers.set("content-type", "application/json");
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
     }
@@ -38,9 +38,9 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
           // Retry the original query with the new access token
           result = await baseQuery(args, api, extraOptions);
         } else {
-          // Refreshing the token failed, log out the [user]
+          // Refreshing the token failed, log out the user
           api.dispatch(logout());
-          // Consider using a more [user]-friendly notification system than alert
+          // Consider using a more user-friendly notification system than alert
           console.error("Session expired. Please login again. 1");
         }
       } catch (error) {
@@ -58,6 +58,6 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
 // create api slice with custom base query
 export const apiSlice = createApi({
   baseQuery: baseQueryWithReAuth,
-  tagTypes: ["User", "UploadSingle"], // tagTypes are used for cache invalidation
+  tagTypes: ["User", "Tutorial"], // tagTypes are used for cache invalidation
   endpoints: (builder) => ({}),
 });
