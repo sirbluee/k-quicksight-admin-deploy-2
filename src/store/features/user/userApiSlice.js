@@ -29,11 +29,18 @@ export const userApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["User"],
         }),
+        getAllUser: builder.query({
+            query: () => ({
+                url: `users/`,
+                method: 'GET',
+            }),
+            providesTags: ["User"],
+        })
     }),
 });
 
 // auto generated hooks for getUser query (GET)
-export const { useGetUserQuery, useUpdateUserMutation, useFileImportMutation } = userApiSlice;
+export const { useGetUserQuery, useUpdateUserMutation, useFileImportMutation, useGetAllUserQuery } = userApiSlice;
 
 function generateBoundary() {
     return `----WebKitFormBoundary${Math.random().toString(16).substr(2)}`;
