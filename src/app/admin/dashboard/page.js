@@ -7,7 +7,7 @@ export default function AdminDashboard (){
 
     return(
         <section>
-            <div className={"py-10 mr-10 ml-60"}>
+            <div className={"py-10 mr-10"}>
                 <SummaryDash/>
                 <div className={"grid grid-cols-2 gap-10 mt-14"}>
                     <div className={"shadow-md"}>
