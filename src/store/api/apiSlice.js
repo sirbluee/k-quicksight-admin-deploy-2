@@ -7,7 +7,7 @@ const baseQuery = fetchBaseQuery({
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.access;
-    headers.set("content-type", "application/json");
+    // headers.set("content-type", "application/json");
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
     }
@@ -58,6 +58,6 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
 // create api slice with custom base query
 export const apiSlice = createApi({
   baseQuery: baseQueryWithReAuth,
-  tagTypes: ["User", "UploadSingle"], // tagTypes are used for cache invalidation
+  tagTypes: ["User", "Tutorial"], // tagTypes are used for cache invalidation
   endpoints: (builder) => ({}),
 });
