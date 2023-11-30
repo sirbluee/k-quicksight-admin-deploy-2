@@ -4,14 +4,14 @@ export const userApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         
         getTutorials: builder.query({
-            query: ({ page, size, title }) => `/tutorials/?p=${page}&size=${size}&title=${title}`,
+            query: ({ page, size, title }) => `tutorials/?p=${page}&size=${size}&title=${title}`,
             keepUnusedDataFor: 5, // keep unused data in cache for 5 seconds
             providesTags: ["Tutorial"], // provideTags are used for updating cache
         }),
         
         deleteTutorials: builder.mutation({
             query: (id) => ({
-                url: `/tutorials/${id}/`,
+                url: `tutorials/${id}/`,
                 method: "DELETE",
             }),
             invalidatesTags: ["Tutorial"],
@@ -19,7 +19,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
         
         createTutorial: builder.mutation({
             query: ({ data }) => ({
-                url: `/tutorials/`,
+                url: `tutorials/`,
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
@@ -30,14 +30,14 @@ export const userApiSlice = apiSlice.injectEndpoints({
         }),
         
         getTutorialById: builder.query({
-            query: (id) => `/tutorials/${id}/`,
+            query: (id) => `tutorials/${id}/`,
             keepUnusedDataFor: 5, 
             providesTags: ["Tutorial"],
         }),
 
         updateTutorial: builder.mutation({
             query: ({ id, data }) => ({
-                url: `/tutorials/${id}/`,
+                url: `tutorials/${id}/`,
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json',

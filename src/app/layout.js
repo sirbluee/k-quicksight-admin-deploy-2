@@ -1,3 +1,5 @@
+'use client'
+
 import {Inter} from 'next/font/google'
 import './globals.css'
 import NextUI_Provider from "@/app/NextUiProvider";
@@ -15,16 +17,15 @@ export default function RootLayout({children}) {
     return (
         <html lang="en">
         <body className="bg-background-color">
-            <Providers>
-                <NextUI_Provider>
-                    <SidebarAdmin/>
-                    <div className={'pl-[15%] py-24 pr-[5%]'}>
-                        {children}
-                    </div>
-
-                </NextUI_Provider>
-            </Providers>
+        <Providers>
+            <NextUI_Provider>
+                <SidebarAdmin/>
+                    {children}
+            </NextUI_Provider>
+        </Providers>
         </body>
         </html>
     )
+
+
 }

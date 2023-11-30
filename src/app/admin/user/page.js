@@ -1,10 +1,9 @@
-
-import TutorialTable from "@/components/Table/TutorialsTable";
+import TableUser from "@/app/admin/user/component/table";
 export default function ListUser(){
 
     return(
-        <div className={"py-10 mr-10 ml-60"}>
-            <TutorialTable/>
+        <div>
+            <TableUser />
         </div>
     )
 }
