@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
-import img404 from '@assets/images/404.png'
+import img404 from '@assets/New folder/404.png'
 
 export default function NotFound() {
     const router = useRouter();
