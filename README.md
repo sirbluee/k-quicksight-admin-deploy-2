@@ -6,8 +6,6 @@
 <div align="center">
   <a href="https://k-quicksight-4gmo.vercel.app/">
     <img src="https://photostad-api.istad.co/api/v1/files/2e18bd43c8124c82a9d6859c4d3a35ad.png/" alt="Logo" width="130" height="auto"/>
-    <h1>Our Admin Home page<h1/>
-    <img src="http:////photostad-api.istad.co/api/v1/files/63bd5f72ccef461fb7360c13f63e074c.png" alt="Logo" width="130" height="auto"/>
   </a>
 </div>
 
@@ -36,7 +34,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About K-QuickSight
  <a href="https://k-quicksight-4gmo.vercel.app/">
-    <img src="https://photostad-api.istad.co/api/v1/files/60c22265a1454de1b7a0eb93a1cbffa4.png" alt="Website homepage" width="auto" height="auto"/>
+    <img src="https://photostad-api.istad.co/api/v1/files/63bd5f72ccef461fb7360c13f63e074c.png" alt="Website homepage" width="auto" height="auto"/>
  </a>
 <br/>
 <br />
