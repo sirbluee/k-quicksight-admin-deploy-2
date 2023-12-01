@@ -72,10 +72,8 @@ Deployment: https://k-quicksight-4gmo.vercel.app/
 
 ## Global Pages (Not sign in)
 
-01. [Home](https://k-quicksight-4gmo.vercel.app/) : /
+01. [Home](https://k-quicksight-4gmo.vercel.app/) : /admin/dashboard
 02. [Sign in](https://k-quicksight-4gmo.vercel.app/auth/login) : /auth/login
-03. [Sign up](https://k-quicksight-4gmo.vercel.app/auth/signup) : /auth/sign up
-04. [Feature](https://k-quicksight-4gmo.vercel.app/features) : /features
 05. [Tutorial](https://k-quicksight-4gmo.vercel.app/tutorials) : /tutorials
 06. [About Us](https://k-quicksight-4gmo.vercel.app/about-us) : /about-us
 07. [Contact Us](https://k-quicksight-4gmo.vercel.app/contact-us) : /contact-us
