@@ -21,7 +21,6 @@ export default function RootLayout({children}) {
                     <div className={'pl-[15%] py-24 pr-[5%]'}>
                         {children}
                     </div>
-
                 </NextUI_Provider>
             </Providers>
         </body>
