@@ -1,12 +1,12 @@
 'use client'
 import React from 'react'
-import AdminDashboard from "@/app/admin/dashboard/page";
+import Login from "@/app/auth/login/page";
 
 export default function Homepage() {
 
   return (
       <>
-          <AdminDashboard />
+          <Login />
       </>
   );
 }

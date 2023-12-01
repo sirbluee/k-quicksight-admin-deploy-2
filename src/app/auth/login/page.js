@@ -15,7 +15,7 @@ export default function Login() {
             {/*>*/}
             {/*    ⬅️ Back*/}
             {/*</button>*/}
-            <div className="w-full flex flex-wrap justify-center items-center">
+            <div className="w-full min-h-screen flex flex-wrap justify-center items-center">
                 <FormLogin />
             </div>
         </main>
