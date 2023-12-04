@@ -50,7 +50,7 @@
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/k-quicksight/k-quicksight-ui
+   git clone https://github.com/k-quicksight/k-quicksight-admin.git
    ```
 2. Install NPM packages
    ```sh
@@ -75,7 +75,7 @@ Deployment: https://k-quicksight-4gmo.vercel.app/
 01. [Home](https://k-quicksight-4gmo.vercel.app/) : /admin/dashboard
 02. [Sign in](https://k-quicksight-4gmo.vercel.app/auth/login) : /auth/login
 05. [Tutorial](https://k-quicksight-4gmo.vercel.app/tutorials) : /tutorials
-06. [About Us](https://k-quicksight-4gmo.vercel.app/about-us) : /about-us
+06. [About Us](https://k-quicksight-4gmo.vercel.app/about-us) : /admin/login
 07. [Contact Us](https://k-quicksight-4gmo.vercel.app/contact-us) : /contact-us
 08. [Sample](https://k-quicksight-4gmo.vercel.app/sample) : /sample
 08. [FAQs](https://k-quicksight-4gmo.vercel.app/faqs) : /faqs
