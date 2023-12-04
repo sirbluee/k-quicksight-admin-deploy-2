@@ -1,5 +1,3 @@
-'use client'
-
 import {Inter} from 'next/font/google'
 import './globals.css'
 import NextUI_Provider from "@/app/NextUiProvider";

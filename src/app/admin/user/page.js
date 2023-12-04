@@ -1,4 +1,5 @@
-import TableUser from "@/app/admin/user/component/table";
+import TableUser from "./component/table";
+
 export default function ListUser(){
 
     return(
