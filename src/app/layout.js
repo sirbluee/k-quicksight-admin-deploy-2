@@ -8,10 +8,6 @@ import SidebarAdmin from "@/components/Table/SidebarAdmin";
 const inter = Inter({subsets: ['latin']})
 import Providers from "@/store/Providers";
 
-export const metadata = {
-    title: 'k-quicksight',
-    description: 'Analyze your data!',
-}
 export default function RootLayout({children}) {
 
     return (
