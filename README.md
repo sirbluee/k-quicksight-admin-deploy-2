@@ -78,7 +78,7 @@ Deployment: https://k-quicksight-admin-deploy.vercel.app/
 06. [Login](https://k-quicksight-4gmo.vercel.app/about-us) : /admin/login
 07. [Manage Tutorial](https://k-quicksight-admin-deploy.vercel.app/admin/tutorial) : /admin/tutorial
 08. [Analysis](https://k-quicksight-admin-deploy.vercel.app/admin/analysis) : /analysis
-08. [Visualization]([analysis](https://k-quicksight-admin-deploy.vercel.app/admin/visualization)) : /visualization
+08. [Visualization]([analysis](https://k-quicksight-admin-deploy.vercel.app/admin/visualization)) : /admin/visualization
 
 <!--  
 ## User board Pages (Signed in)
