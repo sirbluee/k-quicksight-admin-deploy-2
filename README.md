@@ -70,7 +70,7 @@ Deployment: https://k-quicksight-admin-deploy.vercel.app/
 <!-- Page URL -->
 ## Page URL
 
-## Global Pages (Not sign in)
+## Admin Pages (After sign in)
 
 01. [Home](https://k-quicksight-admin-deploy.vercel.app/admin/dashboard) : /admin/dashboard
 02. [Sign in](https://k-quicksight-admin-deploy.vercel.app/) : /auth/login
