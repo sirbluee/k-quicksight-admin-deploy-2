@@ -61,7 +61,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Deployment
 
-Deployment: https://k-quicksight-admin-deploy.vercel.app/
+Deployment: https://k-quicksight-admin.vercel.app/
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -73,12 +73,11 @@ Deployment: https://k-quicksight-admin-deploy.vercel.app/
 ## Admin Pages (After sign in)
 
 01. [Home](https://k-quicksight-admin-deploy.vercel.app/admin/dashboard) : /admin/dashboard
-02. [Sign in](https://k-quicksight-admin-deploy.vercel.app/) : /auth/login
-05. [Manage Users](https://k-quicksight-admin-deploy.vercel.app/admin/user) : /admin/user
-06. [Login](https://k-quicksight-4gmo.vercel.app/about-us) : /admin/login
-07. [Manage Tutorial](https://k-quicksight-admin-deploy.vercel.app/admin/tutorial) : /admin/tutorial
-08. [Analysis](https://k-quicksight-admin-deploy.vercel.app/admin/analysis) : /analysis
-08. [Visualization]([analysis](https://k-quicksight-admin-deploy.vercel.app/admin/visualization)) : /admin/visualization
+02. [Sign in](https://k-quicksight-admin.vercel.app/) : /auth/login
+05. [Manage Users](https://k-quicksight-admin.vercel.app/admin/user) : /admin/user
+06. [Manage Tutorial](https://k-quicksight-admin.vercel.app/admin/tutorial) : /admin/tutorial
+07. [Analysis](https://k-quicksight-admin.vercel.app/admin/analysis) : /analysis
+08. [Visualization](https://k-quicksight-admin.vercel.app/admin/tutorial) : /admin/visualization
 
 <!--  
 ## User board Pages (Signed in)
