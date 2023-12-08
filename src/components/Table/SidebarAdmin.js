@@ -41,7 +41,7 @@ export default function SidebarAdmin(){
                         </Link>
                     </li>
                     <li>
-                        <Link rel="noopener noreferrer" href="#" className="flex items-center p-2 space-x-3 rounded-md hover:bg-primary-color hover:text-white">
+                        <Link rel="noopener noreferrer" href="/admin/visualization" className="flex items-center p-2 space-x-3 rounded-md hover:bg-primary-color hover:text-white">
                             <FiBarChart/>
                             <span>Visualization</span>
                         </Link>
