@@ -10,6 +10,7 @@ import { setCurrentUser } from "@/store/features/auth/authSlice";
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import {FiEye} from "react-icons/fi";
 
 
 // least 6 characters long, contains at least one uppercase letter, one lowercase letter, and one number
@@ -85,15 +86,13 @@ export default function FormLogin() {
                                 router.push("/admin/dashboard")
                                 break;
                             case "subscriber":
-                                toast.warn("You don't have permission to access");
+                                toast.success("Success login");
                                 break;
                             default:
                                 toast.error("Unknown role: You don't have permission to access");
                                 break;
                         }
                     }
-                } else {
-                    toast.error("Unable to determine your roles");
                 }
             })
             .catch(error => console.log('error', error));
@@ -107,6 +106,11 @@ export default function FormLogin() {
         );
     if (isSuccess) {
         handleCheckUserRole()
+    }
+
+    const [showPassword, setShowPassword] = useState(false);
+    const handeShowPassword = () => {
+        setShowPassword(!showPassword)
     }
 
     return (
@@ -165,7 +169,7 @@ export default function FormLogin() {
                         <div className="relative z-0 w-full mb-6 group">
                             <Field
                                 autoComplete="off"
-                                type="password"
+                                type= {showPassword ? "text" : "password"}
                                 name="password"
                                 id="floating_password"
                                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -177,6 +181,7 @@ export default function FormLogin() {
                             >
                                 Password
                             </label>
+                            <FiEye onClick={handeShowPassword} className="absolute right-0 top-3"/>
                             <ErrorMessage
                                 name="password"
                                 component="div"
