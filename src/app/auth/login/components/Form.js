@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import { useLoginMutation } from "@/store/features/auth/authApiSlice";
 import { setCredentials } from "@/store/features/auth/authSlice";
 import { useGetUserQuery } from "@/store/features/user/userApiSlice";
-import { setCurrentUser } from "@/store/features/auth/authSlice";
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -33,6 +32,7 @@ export default function FormLogin() {
     const dispatch = useDispatch();
     const [accessToken, setAccessToken] = useState()
     const [login, { isLoading, isSuccess }] = useLoginMutation();
+    const [showPassword, setShowPassword] = useState(false);
 
     const {
         data: user,
@@ -108,7 +108,7 @@ export default function FormLogin() {
         handleCheckUserRole()
     }
 
-    const [showPassword, setShowPassword] = useState(false);
+
     const handeShowPassword = () => {
         setShowPassword(!showPassword)
     }
