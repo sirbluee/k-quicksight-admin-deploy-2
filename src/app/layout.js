@@ -20,7 +20,7 @@ export default function RootLayout({children}) {
             <Providers>
                 <NextUI_Provider>
                     <SidebarAdmin/>
-                    <div className={'pl-[15%] py-24 pr-[5%]'}>
+                    <div>
                         {children}
                     </div>
                 </NextUI_Provider>

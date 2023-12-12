@@ -4,7 +4,7 @@ const inter = Inter({subsets: ['latin']})
 import {useGetUserQuery} from "@/store/features/user/userApiSlice";
 import {Button, Spinner} from "@nextui-org/react";
 import Image from "next/image";
-import authentication from "@assets/New folder/authentication.png";
+import authentication from "@assets/images/authentication.png";
 import {useRouter} from "next/navigation";
 
 export const metadata = {
@@ -32,7 +32,7 @@ export default function DashboardRootLayout({children}) {
         </>
     } else {
         content = (
-            <section className={'pl-[15%] py-24 pr-[5%]'}>
+            <section className={'pl-[15%] py-10 pr-[5%]'}>
                 {children}
             </section>
         )
