@@ -1,10 +1,15 @@
 "use client"
 import React from "react";
 import Image from "next/image";
+import {useGetAllUsersQuery} from "@/store/features/user/userApiSlice";
+
+
 export default function SummaryDash() {
     const [totalUsers, setTotalUsers] = React.useState(198000);
     const [createdVisualizations, setCreatedVisualizations] = React.useState(2400);
     const [uploadedData, setUploadedData] = React.useState(89000);
+
+    const {data:allUserTotal} = useGetAllUsersQuery();
 
     return (
         <>
@@ -18,8 +23,7 @@ export default function SummaryDash() {
                             </div>
                             <div>
                                 <h3 className="text-sm font-bold text-gray-500">Total Users</h3>
-                                <div className="text-3xl font-bold text-gray-900">{totalUsers}</div>
-                                <div className="text-sm text-gray-500">↑ 37.8% this month</div>
+                                <div className="text-3xl font-bold text-gray-900">{allUserTotal?.data.count}</div>
                             </div>
                         </div>
 
