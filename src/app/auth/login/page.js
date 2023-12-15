@@ -7,7 +7,14 @@ export default function Login() {
     const router = useRouter();
     return (
         <main className="h-screen ">
-            <div className="w-full min-h-screen flex flex-wrap justify-center items-center">
+            {/*<button*/}
+            {/*    onClick={() => router.push("/")}*/}
+            {/*    title="back to home page"*/}
+            {/*    className="text-4xl font-bold text-center m-5"*/}
+            {/*>*/}
+            {/*    ⬅️ Back*/}
+            {/*</button>*/}
+            <div>
                 <FormLogin />
             </div>
         </main>
