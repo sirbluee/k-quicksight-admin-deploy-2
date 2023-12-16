@@ -58,6 +58,6 @@ const baseQueryWithReAuth = async (args, api, extraOptions) => {
 // create api slice with custom base query
 export const apiSlice = createApi({
   baseQuery: baseQueryWithReAuth,
-  tagTypes: ["User", "Tutorial", "data"], // tagTypes are used for cache invalidation
+  tagTypes: ["User", "Tutorial", "data", "analysis"], // tagTypes are used for cache invalidation
   endpoints: (builder) => ({}),
 });
