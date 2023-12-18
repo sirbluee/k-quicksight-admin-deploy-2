@@ -1,5 +1,5 @@
 "use client"
-import { Formik, Form, Field, ErrorMessage } from "formik";
+
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
@@ -10,6 +10,11 @@ import { setCurrentUser } from "@/store/features/auth/authSlice";
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import Image from "next/image";
+import admin_login from '@assets/images/admin.jpg'
+import {Button, Input} from "@nextui-org/react";
+import {IoEyeSharp} from "react-icons/io5";
+import {FaEyeSlash} from "react-icons/fa6";
 
 
 // least 6 characters long, contains at least one uppercase letter, one lowercase letter, and one number
@@ -41,7 +46,13 @@ export default function FormLogin() {
         error,
     } = useGetUserQuery();
 
-    const handleSubmit = async ({ email, password }) => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('')
+    const [isVisible, setIsVisible] = useState(false);
+
+    const toggleVisibility = () => setIsVisible(!isVisible);
+
+    const handleSubmit = async () => {
         try {
             const { data } = await login({ email, password }).unwrap();
             setAccessToken(data.access)
@@ -77,20 +88,34 @@ export default function FormLogin() {
             .then(response => response.json())
             .then(result => {
                 const roles = result?.data?.roles;
-                console.log(result)
-                if (roles) {
+                if (roles && roles.length > 0) {
+                    let redirectTo = null;
+
                     for (const role of roles) {
                         switch (role.name) {
                             case "admin":
-                                router.push("/admin/dashboard")
+                                redirectTo = "/admin/dashboard";
                                 break;
                             case "subscriber":
                                 toast.warn("You don't have permission to access");
                                 break;
+                            // Add more cases for other roles if needed
                             default:
                                 toast.error("Unknown role: You don't have permission to access");
                                 break;
                         }
+
+                        // If a higher priority role is found, break out of the loop
+                        if (redirectTo) {
+                            break;
+                        }
+                    }
+
+                    // Redirect based on the highest priority role
+                    if (redirectTo) {
+                        router.push(redirectTo);
+                    } else {
+                        toast.warn("You don't have permission to access");
                     }
                 } else {
                     toast.error("Unable to determine your roles");
@@ -98,20 +123,12 @@ export default function FormLogin() {
             })
             .catch(error => console.log('error', error));
     }
-
-    if (isLoading)
-        return (
-            <div className="flex min-h-screen w-1/2  items-center justify-center p-24">
-                Loading...
-            </div>
-        );
     if (isSuccess) {
         handleCheckUserRole()
     }
 
     return (
-        <div className="w-1/2 grid grid-cols-1 place-content-center shadow-md rounded-md p-24">
-            
+        <div className={'lg:flex md:flex block'}>
             <ToastContainer
                 position="top-center"
                 autoClose={5000}
@@ -124,79 +141,34 @@ export default function FormLogin() {
                 pauseOnHover
                 theme="light"
             />
-            <h1 className={"text-3xl font-bold text-primary-color mb-10"}>Admin Login</h1>
-            <Formik
-                initialValues={{
-                    email: "",
-                    password: "",
-                }}
-                validationSchema={validationSchema}
-                onSubmit={(values, { setSubmitting, resetForm }) => {
-                    setTimeout(() => {
-                        handleSubmit(values);
-                        resetForm();
-                    }, 500);
-                }}
-            >
-                {({ isSubmitting }) => (
-                    <Form className="w-full ">
-                        {/* Email */}
-                        <div className="relative z-0 w-full mb-6 group">
-                            <Field
-                                type="email"
-                                name="email"
-                                id="floating_email"
-                                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                placeholder=" "
-                            />
-                            <label
-                                htmlFor="email"
-                                className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                            >
-                                Email address
-                            </label>
-                            <ErrorMessage
-                                name="email"
-                                component="div"
-                                className="text-red-500"
-                            />
-                        </div>
-                        {/* Password */}
-                        <div className="relative z-0 w-full mb-6 group">
-                            <Field
-                                autoComplete="off"
-                                type="password"
-                                name="password"
-                                id="floating_password"
-                                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                placeholder=" "
-                            />
-                            <label
-                                htmlFor="password"
-                                className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                            >
-                                Password
-                            </label>
-                            <ErrorMessage
-                                name="password"
-                                component="div"
-                                className="text-red-500"
-                            />
-                        </div>
+            <div className={'w-1/2 min-h-screen bg-white flex justify-center items-center'}>
+                <Image src={admin_login} alt={'admin-login'} className={'w-2/3 m-auto'} />
+            </div>
+            <div className={'w-1/2 min-h-screen bg-white flex flex-col justify-center items-center'}>
+                <div className={'w-2/3 grid gap-10'}>
+                    <div>
+                        <h3 className={'text-primary-color uppercase text-center'}>Welcome!</h3>
+                        <p className={'text-description-color font-medium text-center'}>Fill your data enter, thank you!</p>
+                    </div>
+                    <div className={'grid gap-5'}>
+                        <Input value={email} onValueChange={setEmail} label={'Admin email'} variant={'underlined'} color={'primary'} isRequired isClearable  onClear={() => setEmail('')} />
+                        <Input
+                            endContent={
+                                <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
+                                    {!isVisible ? (
+                                        <IoEyeSharp  className="text-xl pointer-events-none text-primary-color" />
+                                    ) : (
+                                        <FaEyeSlash className="text-xl pointer-events-none text-primary-color" />
+                                    )}
+                                </button>
+                            }
+                            type={isVisible ? "text" : "password"}
+                            value={password} onValueChange={setPassword} label={'Password'} variant={'underlined'} color={'primary'} isRequired />
+                        <Button isLoading={isLoading} className={'mt-5'} variant={'solid'} color={'primary'} onClick={handleSubmit} >Login</Button>
+                    </div>
+                </div>
+            </div>
 
-                        {/* Submit */}
-                        <div className="relative z-0 w-full mb-6 group">
-                            <button
-                                disabled={isSubmitting}
-                                type="submit"
-                                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                            >
-                                Login
-                            </button>
-                        </div>
-                    </Form>
-                )}
-            </Formik>
         </div>
     );
 }
