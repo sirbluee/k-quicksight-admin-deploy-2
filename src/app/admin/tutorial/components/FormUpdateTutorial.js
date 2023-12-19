@@ -16,7 +16,7 @@ const validationSchema = Yup.object({
     name: Yup.string().required("Name is required"),
     description: Yup.string().required("Description is required"),
     file: Yup.mixed()
-        .test("fileSize", " File bigger than 5mb", (value) => {
+        .test("fileSize", "File bigger than 5mb", (value) => {
             if (!value) {
                 return true;
             }
@@ -45,7 +45,6 @@ const UpdateForm = ({
     closeModal,
 }) => {
     const { data, isLoading: processing, error } = useGetTutorialByIdQuery(tutorialId);
-    console.log(tutorialId)
 
     const tutorialById = data;
     const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -99,7 +98,7 @@ const UpdateForm = ({
             title: values.name,
             slug: stringToSlug(values.description),
             description: values.description,
-            thumbnail: values.thumbnail, //refer to imgId
+            thumbnail: values.thumbnail || tutorialById.thumbnail, //refer to imgId
             content: editorData,
             published_by: data?.published_by?.id
         });
@@ -272,14 +271,6 @@ const UpdateForm = ({
                     }}
                     validationSchema={validationSchema}
                     onSubmit={async (values, { setSubmitting, resetForm }) => {
-
-                        console.log(values);
-
-                        if (values.thumbnail === undefined || values.thumbnail === '') {
-                            values.thumbnail = tutorialById.thumbnail;
-                        }
-
-                        console.log(values)
                         handleSubmit(values);
                         setSubmitting(false);
                         resetForm();
