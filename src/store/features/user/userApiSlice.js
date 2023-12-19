@@ -62,13 +62,20 @@ export const userApiSlice = apiSlice.injectEndpoints({
             keepUnusedDataFor: 5,
             providesTags: ["User"],
         })
-    }),
+  }),
 });
 
-// auto generated hooks for getUser query (GET)
-export const { useGetUserQuery, useUpdateUserMutation, useFileImportMutation, useGetAllUserQuery, useDeleteUserMutation, useCreateUserMutation, useGetAllUsersQuery } = userApiSlice;
+
+export const {
+  useGetUserQuery,
+  useUpdateUserMutation,
+  useFileImportMutation,
+  useGetAllUserQuery,
+  useDeleteUserMutation,
+  useCreateUserMutation,
+} = userApiSlice;
+
 
 function generateBoundary() {
     return `----WebKitFormBoundary${Math.random().toString(16).substr(2)}`;
 }
-
