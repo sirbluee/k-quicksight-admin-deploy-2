@@ -1,7 +1,7 @@
 "use client"
 import React from "react";
 import Image from "next/image";
-import {useGetAllUsersQuery} from "@/store/features/user/userApiSlice";
+import {useGetAllUserQuery} from "@/store/features/user/userApiSlice";
 
 
 export default function SummaryDash() {
@@ -9,7 +9,7 @@ export default function SummaryDash() {
     const [createdVisualizations, setCreatedVisualizations] = React.useState(2400);
     const [uploadedData, setUploadedData] = React.useState(89000);
 
-    const {data:allUserTotal} = useGetAllUsersQuery();
+    const {data:allUserTotal} = useGetAllUserQuery();
 
     return (
         <>

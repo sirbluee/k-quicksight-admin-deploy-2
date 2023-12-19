@@ -18,7 +18,7 @@ export default function ModalUpdateTutorial({ tutorialId }) {
                 <ModalContent className="m-28">
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">Updatee Tutorial</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">Update Tutorial</ModalHeader>
                             <ModalBody >
                                 <UpdateForm tutorialId={tutorialId} />
                             </ModalBody>
