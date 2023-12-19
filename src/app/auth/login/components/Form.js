@@ -12,9 +12,9 @@ import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Image from "next/image";
 import admin_login from '@assets/images/admin.jpg'
-import {Button, Input} from "@nextui-org/react";
-import {IoEyeSharp} from "react-icons/io5";
-import {FaEyeSlash} from "react-icons/fa6";
+import { Button, Input } from "@nextui-org/react";
+import { IoEyeSharp } from "react-icons/io5";
+import { FaEyeSlash } from "react-icons/fa6";
 
 
 // least 6 characters long, contains at least one uppercase letter, one lowercase letter, and one number
@@ -88,38 +88,14 @@ export default function FormLogin() {
             .then(response => response.json())
             .then(result => {
                 const roles = result?.data?.roles;
-                if (roles && roles.length > 0) {
-                    let redirectTo = null;
-
-                    for (const role of roles) {
-                        switch (role.name) {
-                            case "admin":
-                                redirectTo = "/admin/dashboard";
-                                break;
-                            case "subscriber":
-                                toast.warn("You don't have permission to access");
-                                break;
-                            // Add more cases for other roles if needed
-                            default:
-                                toast.error("Unknown role: You don't have permission to access");
-                                break;
-                        }
-
-                        // If a higher priority role is found, break out of the loop
-                        if (redirectTo) {
-                            break;
-                        }
+                roles?.map((item, index) => {
+                    if (item.name.includes('admin')) {
+                        toast.success('Login to Admin successfully');
+                        setTimeout(() => {
+                            router.push("/admin/dashboard")
+                        }, 1000)
                     }
-
-                    // Redirect based on the highest priority role
-                    if (redirectTo) {
-                        router.push(redirectTo);
-                    } else {
-                        toast.warn("You don't have permission to access");
-                    }
-                } else {
-                    toast.error("Unable to determine your roles");
-                }
+                })
             })
             .catch(error => console.log('error', error));
     }
@@ -128,47 +104,51 @@ export default function FormLogin() {
     }
 
     return (
-        <div className={'lg:flex md:flex block'}>
-            <ToastContainer
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-            />
-            <div className={'w-1/2 min-h-screen bg-white flex justify-center items-center'}>
-                <Image src={admin_login} alt={'admin-login'} className={'w-2/3 m-auto'} />
-            </div>
-            <div className={'w-1/2 min-h-screen bg-white flex flex-col justify-center items-center'}>
-                <div className={'w-2/3 grid gap-10'}>
-                    <div>
-                        <h3 className={'text-primary-color uppercase text-center'}>Welcome!</h3>
-                        <p className={'text-description-color font-medium text-center'}>Fill your data enter, thank you!</p>
-                    </div>
-                    <div className={'grid gap-5'}>
-                        <Input value={email} onValueChange={setEmail} label={'Admin email'} variant={'underlined'} color={'primary'} isRequired isClearable  onClear={() => setEmail('')} />
-                        <Input
-                            endContent={
-                                <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
-                                    {!isVisible ? (
-                                        <IoEyeSharp  className="text-xl pointer-events-none text-primary-color" />
-                                    ) : (
-                                        <FaEyeSlash className="text-xl pointer-events-none text-primary-color" />
-                                    )}
-                                </button>
-                            }
-                            type={isVisible ? "text" : "password"}
-                            value={password} onValueChange={setPassword} label={'Password'} variant={'underlined'} color={'primary'} isRequired />
-                        <Button isLoading={isLoading} className={'mt-5'} variant={'solid'} color={'primary'} onClick={handleSubmit} >Login</Button>
+        <div>
+            <>
+                <ToastContainer
+                    position="top-center"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                />
+            </>
+            <div className={'grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1'}>
+                <div className={'min-h-screen bg-white flex justify-center items-center'}>
+                    <Image src={admin_login} alt={'admin-login'} className={'w-2/3 m-auto'} />
+                </div>
+                <div className={'min-h-screen bg-white flex flex-col justify-center items-center'}>
+                    <div className={'w-2/3 grid gap-10'}>
+                        <div>
+                            <h3 className={'text-primary-color uppercase text-center'}>Welcome!</h3>
+                            <p className={'text-description-color font-medium text-center'}>Fill your data enter, thank you!</p>
+                        </div>
+                        <div className={'grid gap-5'}>
+                            <Input value={email} onValueChange={setEmail} label={'Admin email'} variant={'underlined'} color={'primary'} isRequired isClearable onClear={() => setEmail('')} />
+                            <Input
+                                endContent={
+                                    <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
+                                        {!isVisible ? (
+                                            <IoEyeSharp className="text-xl pointer-events-none text-primary-color" />
+                                        ) : (
+                                            <FaEyeSlash className="text-xl pointer-events-none text-primary-color" />
+                                        )}
+                                    </button>
+                                }
+                                type={isVisible ? "text" : "password"}
+                                value={password} onValueChange={setPassword} label={'Password'} variant={'underlined'} color={'primary'} isRequired />
+                            <Button isLoading={isLoading} className={'mt-5'} variant={'solid'} color={'primary'} onClick={handleSubmit} >Login</Button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
+            </div>
         </div>
     );
 }
