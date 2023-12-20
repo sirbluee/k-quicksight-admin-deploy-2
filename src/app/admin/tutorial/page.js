@@ -10,13 +10,11 @@ const item = [
         key: '1',
         label: 'Tutorial',
         children: <TutorialsTable />,
-        icon: <HiDocumentText />
     },
     {
         key: '2',
         label: ' Request tutorial',
         children: <RequestTutorial /> ,
-        icon: <HiDocumentText />
     }
 ]
 

@@ -22,7 +22,7 @@ const authSlice = createSlice({
       state.user = "";
       state.access = null;
       removeRefresh();
-      console.log("logout");
+
     },
   },
 });

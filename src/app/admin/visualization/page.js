@@ -13,10 +13,10 @@ import {
     TableRow
 } from "@nextui-org/react";
 import {FaSearch} from "react-icons/fa";
-import {analysis} from "@/app/mockData/Analysis";
 import Edit from "@/app/admin/analysis/component/Edit";
 import Delete from "@/app/admin/analysis/component/Delete";
 import {Select} from "antd";
+import {useGetAllVisualizationQuery} from "@/store/features/Visualization/visualization";
 import {getTrimIntoColumnOnlyDate} from "@/utils/generateURL";
 
 export const sizeData = [
@@ -42,12 +42,12 @@ export const sizeData = [
     }
 ]
 
-const Analysis = () => {
+const Visualization = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [value, setValue] = useState(50);
     const [title, setTitle] = useState('')
-    const {data:AllAnalysis} = useGetAllAnalysisQuery({page: currentPage, size: value, title: title});
+    const {data:visualization} = useGetAllVisualizationQuery({page: currentPage, size: value, title: title});
 
     // Api is not for admin!
     const handleSelectionChange = (e) => {
@@ -56,7 +56,7 @@ const Analysis = () => {
 
     return (
         <div className={'p-10'}>
-            <h2 className={'text-secondary-color'}>Analysis</h2>
+            <h2 className={'text-secondary-color'}>Visualization</h2>
             <Input
                 endContent={<FaSearch className={'text-secondary-color'} />}
                 color={'secondary'}
@@ -69,30 +69,32 @@ const Analysis = () => {
                 onValueChange={setTitle}
             />
 
-            <Table classNames={{
-                base: "max-h-[520px] overflow-scroll",
-                table: "min-h-[420px]",
-            }}>
+            <Table
+                classNames={{
+                    base: "max-h-[520px] overflow-scroll",
+                    table: "min-h-[420px]",
+                }}
+            >
                 <TableHeader>
                     <TableColumn>N.o</TableColumn>
-                    <TableColumn>TITLE</TableColumn>
-                    <TableColumn>TYPE</TableColumn>
-                    <TableColumn>CREATE AT</TableColumn>
-                    <TableColumn>FILE</TableColumn>
+                    <TableColumn>NAME</TableColumn>
+                    <TableColumn>Created At</TableColumn>
+                    <TableColumn>Created By</TableColumn>
+                    <TableColumn>Using File</TableColumn>
                     <TableColumn>ACTION</TableColumn>
                 </TableHeader>
                 <TableBody emptyContent={'No analysis'}>
                     {
-                        AllAnalysis?.results.map((item, index) => (
+                        visualization?.results.map((item, index) => (
                             <TableRow key={index}>
-                                <TableCell>{item.id}</TableCell>
-                                <TableCell>{item.title}</TableCell>
-                                <TableCell>{item.model_name}</TableCell>
+                                <TableCell>{index + 1}</TableCell>
+                                <TableCell>{item.title || 'Untitle'}</TableCell>
                                 <TableCell>{getTrimIntoColumnOnlyDate(item.created_at)}</TableCell>
+                                <TableCell>{item.created_by.username}</TableCell>
                                 <TableCell>{item.file.file}</TableCell>
-                                <TableCell className={'flex gap-5'}>
+                                <TableCell className={'gap-5'}>
                                     {/*<Edit />*/}
-                                    <Delete />
+                                    <Delete visualization={item.title} createBy={item.created_by.username} />
                                 </TableCell>
                             </TableRow>
                         ))
@@ -103,7 +105,7 @@ const Analysis = () => {
                 <Pagination
                     page={currentPage}
                     onChange={setCurrentPage}
-                    className={'my-5'} total={AllAnalysis?.pages.length} initialPage={1} />
+                    className={'my-5'} total={visualization?.pages.length} initialPage={1} />
                 <Select
                     size={'large'}
                     defaultValue="50"
@@ -118,4 +120,4 @@ const Analysis = () => {
     );
 };
 
-export default Analysis;
+export default Visualization;

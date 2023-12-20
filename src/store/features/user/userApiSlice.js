@@ -30,6 +30,14 @@ export const userApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: ["User"],
         }),
         getAllUser: builder.query({
+            query: () => ({
+                url: `users/`,
+                method: 'GET',
+            }),
+            keepUnusedDataFor: 5,
+            providesTags: ["User"],
+        }),
+        getAllUserSearch: builder.query({
             query: ({page, size, username}) => ({
                 url: `users/list/?p=${page}&size=${size}&&username=${username}`,
                 method: 'GET',
@@ -66,7 +74,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
 });
 
 // auto generated hooks for getUser query (GET)
-export const { useGetUserQuery, useUpdateUserMutation, useFileImportMutation, useGetAllUserQuery, useDeleteUserMutation, useCreateUserMutation, useGetAllUsersQuery } = userApiSlice;
+export const { useGetUserQuery, useUpdateUserMutation, useFileImportMutation, useGetAllUserQuery, useGetAllUserSearchQuery , useDeleteUserMutation, useCreateUserMutation, useGetAllUsersQuery } = userApiSlice;
 
 function generateBoundary() {
     return `----WebKitFormBoundary${Math.random().toString(16).substr(2)}`;

@@ -2,6 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import {useGetAllUserQuery} from "@/store/features/user/userApiSlice";
+import {useGetAllVisualizationQuery} from "@/store/features/Visualization/visualization";
 
 
 export default function SummaryDash() {
@@ -10,13 +11,14 @@ export default function SummaryDash() {
     const [uploadedData, setUploadedData] = React.useState(89000);
 
     const {data:allUserTotal} = useGetAllUserQuery();
+    const {data:visualization} = useGetAllVisualizationQuery({page: 1, size: 1, title: ''});
 
     return (
         <>
                 <div>
                     <h2 className="text-xl font-bold text-gray-800 mb-10">Summary Dashboard</h2>
-                    <div className="flex flex-col md:flex-row justify-between">
-                        <div className="bg-white rounded-lg p-4 shadow-md flex justify-items-center items-center gap-4 w-96 hover:animate-appearance-in">
+                    <div className="grid grid-cols-3 gap-5">
+                        <div className="bg-white rounded-lg p-4 shadow-md flex justify-items-center items-center gap-4 hover:animate-appearance-in">
                             <div>
                                 <Image width={100} height={100}
                                        src={"/assets/admin-icon/user.svg"} alt="user-icon"/>
@@ -27,19 +29,18 @@ export default function SummaryDash() {
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-lg p-4 shadow-md flex justify-items-center items-center gap-4 hover:animate-appearance-in w-96">
+                        <div className="bg-white rounded-lg p-4 shadow-md flex justify-items-center items-center gap-4 hover:animate-appearance-in">
                             <div>
                                 <Image width={100} height={100}
                                        src={"/assets/admin-icon/bar.svg"} alt="user-icon"/>
                             </div>
                             <div>
                                 <h3 className="text-sm font-bold text-gray-500">Created Visualizations</h3>
-                                <div className="text-3xl font-bold text-gray-900">{createdVisualizations}</div>
-                                <div className="text-sm text-gray-500">↑ 2% this month</div>
+                                <div className="text-3xl font-bold text-gray-900">{visualization?.count}</div>
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-lg p-4 shadow-md flex justify-items-center items-center gap-4 hover:animate-appearance-in w-96">
+                        <div className="bg-white rounded-lg p-4 shadow-md flex justify-items-center items-center gap-4 hover:animate-appearance-in">
                             <div>
                                 <Image width={100} height={100}
                                        src={"/assets/admin-icon/pie.svg"} alt="user-icon"/>

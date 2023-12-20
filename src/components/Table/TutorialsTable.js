@@ -85,9 +85,9 @@ export default function TutorialsTable() {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1 text-center">Are you sure you want to delete this tutorial?</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">Delete tutorial</ModalHeader>
                             <ModalBody className="flex justify-center items-center">
-                                <CiCircleRemove size={200} color="red" />
+                                Are you sure you want to delete this tutorial?
                             </ModalBody>
                             <ModalFooter>
                                 <Button color="danger" variant="light" onPress={onClose}>
@@ -137,10 +137,9 @@ export default function TutorialsTable() {
                             <TableCell>
                                 {moment(item.created_at).format("YYYY-MM-DD")}
                             </TableCell>
-                            <TableCell>
+                            <TableCell className={'grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1'}>
                                 <ModalUpdateTutorial tutorialId={item.id}/>
-                                <Button color="danger" className="ml-4" variant="bordered" onPress={() => handleOpen("blur", item.id)}
-                                     >
+                                <Button color="danger" className="ml-4" variant="bordered" onPress={() => handleOpen("blur", item.id)}>
                                     <MdDelete />
                                 </Button>
                                

@@ -19,7 +19,7 @@ export default function RootLayout({children}) {
         <body className="bg-background-color">
             <Providers>
                 <NextUI_Provider>
-                    <SidebarAdmin/>
+
                     <div>
                         {children}
                     </div>

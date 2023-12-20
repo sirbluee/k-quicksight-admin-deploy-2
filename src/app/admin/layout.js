@@ -6,6 +6,7 @@ import {Button, Spinner} from "@nextui-org/react";
 import Image from "next/image";
 import authentication from "@assets/images/authentication.png";
 import {useRouter} from "next/navigation";
+import SidebarAdmin from "@/components/Table/SidebarAdmin";
 
 export const metadata = {
     title: 'k-quicksight',
@@ -32,9 +33,12 @@ export default function DashboardRootLayout({children}) {
         </>
     } else {
         content = (
-            <section className={'pl-[15%] py-10 pr-[5%]'}>
-                {children}
-            </section>
+            <div>
+                <SidebarAdmin/>
+                <section className={'py-10 lg:pl-[15%] md:pl-[20%] pr-10'}>
+                    {children}
+                </section>
+            </div>
         )
     }
     return content;
