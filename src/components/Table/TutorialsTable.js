@@ -133,7 +133,7 @@ export default function TutorialsTable() {
                         <TableRow key={index}>
                             <TableCell>{item.title}</TableCell>
                             <TableCell>{item.published_by.username}</TableCell>
-                            <TableCell>{item.description}</TableCell>
+                            <TableCell className={"flex-wrap w-[50%]"}>{item.description}</TableCell>
                             <TableCell>
                                 {moment(item.created_at).format("YYYY-MM-DD")}
                             </TableCell>
