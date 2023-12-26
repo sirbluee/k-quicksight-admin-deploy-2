@@ -152,7 +152,7 @@ const FormAddNew = ({ closeModal, userId }) => {
     };
 
     try {
-      const response = await fetch("http://136.228.158.126:8002/api/v1/files/upload/images/", requestOptions);
+      const response = await fetch("https://photostad-api.istad.co/api/v1/files/upload/images/", requestOptions);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
