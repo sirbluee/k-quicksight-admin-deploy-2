@@ -15,7 +15,7 @@ export default function SummaryDash() {
         <>
                 <div>
                     <h2 className="text-xl font-bold text-gray-800 mb-10">Summary Dashboard</h2>
-                    <div className="flex flex-col md:flex-row justify-between">
+                    <div className="flex flex-col gap-4 md:flex-row justify-between">
                         <div className="bg-white rounded-lg p-4 shadow-md flex justify-items-center items-center gap-4 w-96 hover:animate-appearance-in">
                             <div>
                                 <Image width={100} height={100}

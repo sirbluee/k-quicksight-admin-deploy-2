@@ -53,7 +53,7 @@ export default function DashboardRootLayout({ children }) {
     );
   } else {
     content = (
-      <section className={"pl-[15%] py-24 pr-[5%]"}>{children}</section>
+      <section className={"md:pl-[20%] lg:pl-[18%] py-24 pr-[3%]"}>{children}</section>
     );
   }
   return content;
