@@ -150,7 +150,7 @@ const FormAddNew = ({ closeModal, userId }) => {
     var raw = JSON.stringify({
       "title": values.name,
       "content": editorData,
-      "thumbnail": thumbnail,
+      "thumbnail": thumbnail.data.filename,
       "description": values.description,
       "published_by": 26
     });
