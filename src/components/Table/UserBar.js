@@ -1,61 +1,52 @@
 "use client"
-import React, {useState} from "react";
+import React, {useState,useEffect} from "react";
 import ReactApexChart from "react-apexcharts";
+import { useGetDashboardQuery } from "@/store/features/dashboard/dashboardApiSlice";
 
 function UserBar (){
+    const {data:dashboard}=useGetDashboardQuery();
+
     const [state, setState] = useState({
-        series: [
-            {
-                name: 'Numbers',
-                data: [76, 85, 101, 98, 87, 105, 91, 114, 94, 67, 67, 67]
-            },
-        ],
+        series: [{
+            name: 'Sales',
+            data: [] // This will be populated with the record_count from API response
+        }],
         options: {
-            chart: {
-                type: 'bar',
-                height: 350
+            xaxis: {
+                categories: [] // This will be populated with the month_name from API response
             },
-            plotOptions: {
-                bar: {
-                    horizontal: false,
-                    columnWidth: '20%',
-                    endingShape: 'rounded'
-                },
-            },
-            dataLabels: {
-                enabled: false
-            },
-            stroke: {
-                show: true,
-                width: 2,
-                colors: ['transparent']
-            },
+            // ... other options remain the same
             title: {
-                text: 'Overall User  created Visualization',
+                text: 'Analysis Activity',
                 align: 'left',
                 style: {
                     fontSize: "16px",
                     color: '#666'
                 }
             },
-            xaxis: {
-                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            },
-            yaxis: {
+        },
+        
+    });
 
-            },
-            fill: {
-                opacity: 1
-            },
-            tooltip: {
-                y: {
-                    formatter: function (val) {
-                        return val + " Users"
+    useEffect(() => {
+        if (dashboard) {
+            const categories = dashboard.analysis_activity.map(item => item.month_name);
+            const data = dashboard.analysis_activity.map(item => item.record_count || 0); // Use 0 if record_count is null
+
+            setState(prevState => ({
+                ...prevState,
+                series: [{ ...prevState.series[0], data }],
+                options: {
+                    ...prevState.options,
+                    xaxis: {
+                        ...prevState.options.xaxis,
+                        categories
                     }
                 }
-            }
-        },
-    });
+            }));
+        }
+    }, [dashboard]);
+
     return (
         <div className={""}>
             <ReactApexChart options={state.options} series={state.series} type="bar" height={350} />
