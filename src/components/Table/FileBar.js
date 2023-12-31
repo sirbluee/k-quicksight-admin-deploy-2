@@ -1,9 +1,9 @@
-'use client'
-import React, { useState,useEffect } from "react";
+"use client"
+import React, {useState,useEffect} from "react";
 import ReactApexChart from "react-apexcharts";
 import { useGetDashboardQuery } from "@/store/features/dashboard/dashboardApiSlice";
 
-const UserBar = (timestamp) => {
+function FileBar (){
     const {data:dashboard}=useGetDashboardQuery();
 
     const [state, setState] = useState({
@@ -12,14 +12,12 @@ const UserBar = (timestamp) => {
             data: [] // This will be populated with the record_count from API response
         }],
         options: {
-            // ... other options remain the same
             xaxis: {
-                // ... other xaxis options remain the same
                 categories: [] // This will be populated with the month_name from API response
             },
             // ... other options remain the same
             title: {
-                text: 'Visualize Activity',
+                text: 'File Activity',
                 align: 'left',
                 style: {
                     fontSize: "16px",
@@ -32,8 +30,8 @@ const UserBar = (timestamp) => {
 
     useEffect(() => {
         if (dashboard) {
-            const categories = dashboard.visualize_activity.map(item => item.month_name);
-            const data = dashboard.visualize_activity.map(item => item.record_count || 0); // Use 0 if record_count is null
+            const categories = dashboard.file_activity.map(item => item.month_name);
+            const data = dashboard.file_activity.map(item => item.record_count || 0); // Use 0 if record_count is null
 
             setState(prevState => ({
                 ...prevState,
@@ -49,13 +47,10 @@ const UserBar = (timestamp) => {
         }
     }, [dashboard]);
 
-    
-
     return (
         <div className={""}>
-            <ReactApexChart options={state.options} series={state.series} type="line" height={350} />
+            <ReactApexChart options={state.options} series={state.series} type="bar" height={350} />
         </div>
     );
-};
-
-export default UserBar;
+}
+export default FileBar;

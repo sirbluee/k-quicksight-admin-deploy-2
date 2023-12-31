@@ -2,7 +2,7 @@ import React from 'react';
 import SummaryDash from "@/components/Table/SummaryDash";
 import UserBar from "@/components/Table/UserBar";
 import UserLine from "@/components/Table/UserLine";
-
+import FileBar from "@/components/Table/FileBar";
 export default function AdminDashboard (){
 
     return(
@@ -15,6 +15,9 @@ export default function AdminDashboard (){
                     </div>
                     <div className={"shadow-md"}>
                         <UserBar/>
+                    </div>
+                    <div className={"shadow-md"}>
+                        <FileBar/>
                     </div>
                 </div>
             </div>
