@@ -8,7 +8,7 @@ import {Input, Pagination, Select, SelectItem} from "@nextui-org/react";
 import Detail from "@/app/admin/tutorial/Request/[id]/page";
 import moment from 'moment';
 import {BiSearch} from "react-icons/bi";
-
+import { useGetAllVisualizationQuery } from '@/store/features/visualization/Visualization';
 
 const Analysis = () => {
 
@@ -16,8 +16,8 @@ const Analysis = () => {
     const [size, setSize] = useState(10);
     const [title,setTitle] = useState('')
     const { data: analysis } = useGetAllAnalysisQuery({ page: page, size: size, title: title});
-
-    console.log(analysis)
+    const { data:visualization } = useGetAllVisualizationQuery({ page: page, size: size, title: title});
+    console.log(visualization)
 
 
 
@@ -30,7 +30,7 @@ const Analysis = () => {
     return (
         <div className={'p-10'}>
             <div>
-                <p className={'text-xl font-semibold text-primary-color mb-2'}>Total Analysis: {analysis?.count}</p>
+                <p className={'text-xl font-semibold text-primary-color mb-2'}>Total Visualization: {visualization?.count}</p>
                 <div className={'flex justify-between items-center'}>
                 <Input startContent={<BiSearch />} placeholder={'Search users ...'} onValueChange={setTitle} className={'w-1/3 my-3'}
                        classNames={{
@@ -43,21 +43,20 @@ const Analysis = () => {
                 <div className={'grid grid-cols-1'}>
                     <Table>
                         <TableHeader>
+                            <TableColumn>FILE</TableColumn>
                             <TableColumn>TITLE</TableColumn>
                             <TableColumn>CREATE BY</TableColumn>
-                            <TableColumn>MODEL NAME</TableColumn>
                             <TableColumn>CREATED AT</TableColumn>
-                            <TableColumn>RECOMMENDED</TableColumn>
                         </TableHeader>
                         <TableBody emptyContent={'No message requested'}>
                             {
-                                analysis?.results.map((item, index) => (
+                                visualization?.results.map((item, index) => (
                                     <TableRow key={index}>
+                                        <TableCell>{item?.file?.file}</TableCell>
                                         <TableCell>{item?.title}</TableCell>
-                                        <TableCell>{item?.user?.username}</TableCell>
-                                        <TableCell>{item?.model_name}</TableCell>
+                                        <TableCell>{item?.created_by?.username}</TableCell>
                                         <TableCell>{moment(item?.created_at).format("YYYY-MM-DD")}</TableCell>
-                                        <TableCell className='w-3/6'>{item?.recommneded}</TableCell>
+
                                     </TableRow>
                                 ))
                             }
@@ -66,7 +65,7 @@ const Analysis = () => {
                     <div className={'my-5 flex gap-5 justify-start items-center'}>
                         <Pagination
                             onChange={setPage}
-                            key={'page'} total={analysis?.pages.length} initialPage={1} color={'primary'} />
+                            key={'page'} total={visualization?.pages.length} initialPage={1} color={'primary'} />
                         <Select
                             variant="faded"
                             selectedKeys={[size]}
