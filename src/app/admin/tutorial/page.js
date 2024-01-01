@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { AndroidOutlined, AppleOutlined } from '@ant-design/icons';
 import { Tabs } from 'antd';
@@ -25,3 +26,5 @@ const Tutorial = () => (
     />
 );
 export default Tutorial;
+
+

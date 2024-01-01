@@ -1,118 +1,111 @@
 'use client'
-import React, {useState} from 'react';
-import {useGetAllAnalysisQuery} from "@/store/features/analysis/Analysis";
-import {useGetAllUserQuery, useGetUserQuery} from "@/store/features/user/userApiSlice";
-import {
-    Input,
-    Pagination,
-    Table,
-    TableBody,
-    TableCell,
-    TableColumn,
-    TableHeader,
-    TableRow
-} from "@nextui-org/react";
-import {FaSearch} from "react-icons/fa";
-import {analysis} from "@/app/mockData/Analysis";
-import Edit from "@/app/admin/analysis/component/Edit";
-import Delete from "@/app/admin/analysis/component/Delete";
-import {Select} from "antd";
-import {getTrimIntoColumnOnlyDate} from "@/utils/generateURL";
+import React, { useState } from 'react';
+import { useGetAllAnalysisQuery } from "@/store/features/analysis/Analysis";
+import { useGetAllUserQuery, useGetUserQuery } from "@/store/features/user/userApiSlice";
+import { useGetRequestTutorialsQuery } from "@/store/features/tutorials/tutorialApiSlice";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
+import { Input, Pagination, Select, SelectItem ,Tooltip} from "@nextui-org/react";
+import Detail from "@/app/admin/tutorial/Request/[id]/page";
+import moment from 'moment';
+import { BiSearch } from "react-icons/bi";
+import { MdRemoveRedEye } from "react-icons/md";
+import ViewDetail from './components/ViewDetail';
 
-export const sizeData = [
-    {
-        id: 1,
-        value: '50',
-        label: 50
-    },
-    {
-        id: 2,
-        value: '100',
-        label: 100
-    },
-    {
-        id: 3,
-        value: '200',
-        label: 200
-    },
-    {
-        id: 4,
-        value: '',
-        label: 'All'
-    }
-]
 
 const Analysis = () => {
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const [value, setValue] = useState(50);
+    const [page, setPage] = useState(1);
+    const [size, setSize] = useState(10);
     const [title, setTitle] = useState('')
-    const {data:AllAnalysis} = useGetAllAnalysisQuery({page: currentPage, size: value, title: title});
+    const { data: analysis } = useGetAllAnalysisQuery({ page: page, size: size, title: title });
 
-    // Api is not for admin!
-    const handleSelectionChange = (e) => {
-        setValue(e);
-    };
+    console.log(analysis)
 
+
+
+    const handlePageSize = (e) => {
+        setSize(e.target.value)
+    }
+
+    const TruncateText = (text, wordLimit) => {
+        text = String(text)
+        const words = text.split(' ');
+
+        if (words.length > wordLimit) {
+            return words.slice(0, wordLimit).join(' ') + '...';
+        } else {
+            return "Not Available";
+        }
+    }
     return (
         <div className={'p-10'}>
-            <h2 className={'text-secondary-color'}>Analysis</h2>
-            <Input
-                endContent={<FaSearch className={'text-secondary-color'} />}
-                color={'secondary'}
-                radius={'lg'}
-                variant={'bordered'}
-                className={'my-5 w-1/2'}
-                size={'sm'}
-                placeholder={'search analysis'}
-                value={title}
-                onValueChange={setTitle}
-            />
+            <div>
+                <p className={'text-xl font-semibold text-primary-color mb-2'}>Total Analysis: {analysis?.count}</p>
+                <div className={'flex justify-between items-center'}>
+                    <Input startContent={<BiSearch />} placeholder={'Search users ...'} onValueChange={setTitle} className={'w-1/3 my-3'}
+                        classNames={{
+                            inputWrapper: [
+                                'rounded-full'
+                            ]
+                        }}
+                        variant={'bordered'} size={'sm'} color={'primary'} />
+                </div>
+                <div className={'grid grid-cols-1'}>
+                    <Table>
+                        <TableHeader>
+                            <TableColumn>TITLE</TableColumn>
+                            <TableColumn>CREATE BY</TableColumn>
+                            <TableColumn>MODEL NAME</TableColumn>
+                            <TableColumn>RECOMMENDED</TableColumn>
+                            <TableColumn>CREATED AT</TableColumn>
+                            <TableColumn>Detail</TableColumn>
 
-            <Table classNames={{
-                base: "max-h-[520px] overflow-scroll",
-                table: "min-h-[420px]",
-            }}>
-                <TableHeader>
-                    <TableColumn>N.o</TableColumn>
-                    <TableColumn>TITLE</TableColumn>
-                    <TableColumn>TYPE</TableColumn>
-                    <TableColumn>CREATE AT</TableColumn>
-                    <TableColumn>FILE</TableColumn>
-                    <TableColumn>ACTION</TableColumn>
-                </TableHeader>
-                <TableBody emptyContent={'No analysis'}>
-                    {
-                        AllAnalysis?.results.map((item, index) => (
-                            <TableRow key={index}>
-                                <TableCell>{item.id}</TableCell>
-                                <TableCell>{item.title}</TableCell>
-                                <TableCell>{item.model_name}</TableCell>
-                                <TableCell>{getTrimIntoColumnOnlyDate(item.created_at)}</TableCell>
-                                <TableCell>{item.file.file}</TableCell>
-                                <TableCell className={'flex gap-5'}>
-                                    {/*<Edit />*/}
-                                    <Delete />
-                                </TableCell>
-                            </TableRow>
-                        ))
-                    }
-                </TableBody>
-            </Table>
-            <div className={'flex gap-5 justify-center items-center'}>
-                <Pagination
-                    page={currentPage}
-                    onChange={setCurrentPage}
-                    className={'my-5'} total={AllAnalysis?.pages.length} initialPage={1} />
-                <Select
-                    size={'large'}
-                    defaultValue="50"
-                    style={{
-                        width: 120,
-                    }}
-                    onChange={handleSelectionChange}
-                    options={sizeData}
-                />
+                        </TableHeader>
+                        <TableBody emptyContent={'No message requested'}>
+                            {
+                                analysis?.results.map((item, index) => (
+                                    <TableRow key={index}>
+                                        <TableCell>{item?.title}</TableCell>
+                                        <TableCell>{item?.user?.username}</TableCell>
+                                        <TableCell>{item?.model_name}</TableCell>
+                                        <TableCell>{TruncateText(item?.recommneded, 6)}</TableCell>
+                                        <TableCell>{moment(item?.created_at).format("YYYY-MM-DD")}</TableCell>
+                                        <TableCell>
+                                            <Tooltip content="View Details">
+                                                <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                                                    {/* <MdRemoveRedEye /> */}
+                                                    <ViewDetail recommneded={item?.recommneded} />
+                                                </span>
+                                            </Tooltip>
+                                        </TableCell>
+
+                                    </TableRow>
+                                ))
+                            }
+                        </TableBody>
+                    </Table>
+                    <div className={'my-5 flex gap-5 justify-start items-center'}>
+                        <Pagination
+                            onChange={setPage}
+                            key={'page'} total={analysis?.pages.length} initialPage={1} color={'primary'} />
+                        <Select
+                            variant="faded"
+                            selectedKeys={[size]}
+                            className="max-w-[150px]"
+                            onChange={handlePageSize}
+                        >
+                            <SelectItem key={50} value={50}>
+                                50
+                            </SelectItem>
+                            <SelectItem key={100} value={100}>
+                                100
+                            </SelectItem>
+                            <SelectItem key={150} value={150}>
+                                150
+                            </SelectItem>
+                        </Select>
+                    </div>
+                </div>
             </div>
         </div>
     );

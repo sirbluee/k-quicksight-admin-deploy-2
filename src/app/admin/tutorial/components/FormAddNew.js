@@ -19,6 +19,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import Loading from "./Loading";
 import { PiFloppyDiskLight } from "react-icons/pi";
+import { useUploadSingleMutation } from "@/store/features/uploadFile/uploadImage";
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Title is required"),
@@ -67,6 +68,7 @@ const FormAddNew = ({ closeModal, userId }) => {
     setEditorData(data);
   };
 
+  const [uploadImage] = useUploadSingleMutation()
   // console.log(editorData, "editor data use state");
   useEffect(() => {
     editorRef.current = {
@@ -141,38 +143,14 @@ const FormAddNew = ({ closeModal, userId }) => {
     setLoading(false);
   };
 
-  async function handleUploadThumbnail(file) {
-    const formData = new FormData();
-    formData.append("file", file);
-
-    const requestOptions = {
-      method: 'POST',
-      body: formData,
-      redirect: 'follow'
-    };
-
-    try {
-      const response = await fetch("http://136.228.158.126:8002/api/v1/files/upload/images/", requestOptions);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      return data.filename
-      return;
-    } catch (error) {
-      console.error('Upload failed:', error);
-      throw error; // Rethrow the error for further handling
-    }
-  }
-
-
   const handleSubmit = async (values) => {
     // create tutorial
-    const thumbnail = await handleUploadThumbnail(values.file)
+    console.log("value ", values)
+    const thumbnail = await uploadImage({ data: values.file });
     var raw = JSON.stringify({
       "title": values.name,
       "content": editorData,
-      "thumbnail": thumbnail,
+      "thumbnail": thumbnail.data.filename,
       "description": values.description,
       "published_by": 26
     });
@@ -211,7 +189,7 @@ const FormAddNew = ({ closeModal, userId }) => {
             setLoading(true);
             const formData = new FormData();
             formData.append("file", values.file);
-
+            console.log("values.file", values.file)
             handleSubmit(values);
             // alert(JSON.stringify(values, null, 2))
             closeModal();

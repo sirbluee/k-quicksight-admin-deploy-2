@@ -3,7 +3,7 @@ import React, {useState,useEffect} from "react";
 import ReactApexChart from "react-apexcharts";
 import { useGetDashboardQuery } from "@/store/features/dashboard/dashboardApiSlice";
 
-function UserBar (){
+function FileBar (){
     const {data:dashboard}=useGetDashboardQuery();
 
     const [state, setState] = useState({
@@ -17,7 +17,7 @@ function UserBar (){
             },
             // ... other options remain the same
             title: {
-                text: 'Analysis Activity',
+                text: 'File Activity',
                 align: 'left',
                 style: {
                     fontSize: "16px",
@@ -30,8 +30,8 @@ function UserBar (){
 
     useEffect(() => {
         if (dashboard) {
-            const categories = dashboard.analysis_activity.map(item => item.month_name);
-            const data = dashboard.analysis_activity.map(item => item.record_count || 0); // Use 0 if record_count is null
+            const categories = dashboard.file_activity.map(item => item.month_name);
+            const data = dashboard.file_activity.map(item => item.record_count || 0); // Use 0 if record_count is null
 
             setState(prevState => ({
                 ...prevState,
@@ -53,4 +53,4 @@ function UserBar (){
         </div>
     );
 }
-export default UserBar;
+export default FileBar;

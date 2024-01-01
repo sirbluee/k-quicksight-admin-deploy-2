@@ -41,7 +41,7 @@ export default function TutorialsTable() {
         isError,
         isSuccess,
     } = useGetTutorialsQuery({ page, size, title });
-
+    console.log(tutorials)
     const [deleteTutorial,{ 
             isLoading: isLoadingDeleteTutorials,
             isError: isDeleteError,
@@ -65,7 +65,14 @@ export default function TutorialsTable() {
         await deleteTutorial(deleteId);
         toast.success("Delete Tutorial Success!");
     }
-
+    const TruncateText=(text, wordLimit )=> {
+        const words = text.split(' ');
+    
+        if (words.length > wordLimit) {
+            return words.slice(0, wordLimit).join(' ') + '...';
+        }
+        return text;
+    }
 
     return (
         <>
@@ -133,7 +140,7 @@ export default function TutorialsTable() {
                         <TableRow key={index}>
                             <TableCell>{item.title}</TableCell>
                             <TableCell>{item.published_by.username}</TableCell>
-                            <TableCell>{item.description}</TableCell>
+                            <TableCell className={"overflow-hidden whitespace-nowrap"}>{TruncateText(item?.description,10)}</TableCell>
                             <TableCell>
                                 {moment(item.created_at).format("YYYY-MM-DD")}
                             </TableCell>
