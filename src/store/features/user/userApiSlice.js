@@ -78,6 +78,7 @@ export const {
   useGetUserQuery,
   useUpdateUserMutation,
   useFileImportMutation,
+  useGetAllUserSearchQuery,
   useGetAllUserQuery,
   useDeleteUserMutation,
   useCreateUserMutation,

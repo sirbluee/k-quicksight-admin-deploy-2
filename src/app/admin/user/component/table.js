@@ -12,7 +12,7 @@ import {
     Pagination,
     SelectItem, Select, Input
 } from "@nextui-org/react";
-import {useGetAllUserQuery, useGetAllUserSearchQuery} from "@/store/features/user/userApiSlice";
+
 import {getTrimIntoColumnOnlyDate} from "@/utils/generateURL";
 import {FaPencilAlt} from "react-icons/fa";
 import {MdDeleteSweep} from "react-icons/md";
@@ -20,6 +20,7 @@ import ModalUpdateUserDetail from "@/app/admin/user/component/modalUpdateUserDet
 import {BiSearch} from "react-icons/bi";
 import DeleteModal from "@/app/admin/user/component/DeleteModal";
 import AddNewModal from "@/app/admin/user/component/addNewModal";
+import { useGetAllUserSearchQuery } from "@/store/features/user/userApiSlice";
 
 
 const data = {
