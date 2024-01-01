@@ -1,24 +1,17 @@
 'use client'
 import React, { useState } from 'react';
-import { useGetAllAnalysisQuery } from "@/store/features/analysis/Analysis";
-import { useGetAllUserQuery, useGetUserQuery } from "@/store/features/user/userApiSlice";
-import {useGetRequestTutorialsQuery} from "@/store/features/tutorials/tutorialApiSlice";
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
-import {Input, Pagination, Select, SelectItem} from "@nextui-org/react";
-import Detail from "@/app/admin/tutorial/Request/[id]/page";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
+import { Input, Pagination, Select, SelectItem } from "@nextui-org/react";
 import moment from 'moment';
-import {BiSearch} from "react-icons/bi";
-import { useGetAllVisualizationQuery } from '@/store/features/visualization/Visualization';
-
-
+import { BiSearch } from "react-icons/bi";
+import { useGetAllVisualizationQuery } from '@/store/features/visualizationFeature/VisualizationFeature';
 
 const Analysis = () => {
 
     const [page, setPage] = useState(1);
     const [size, setSize] = useState(10);
-    const [title,setTitle] = useState('')
-    const { data: analysis } = useGetAllAnalysisQuery({ page: page, size: size, title: title});
-    const { data:visualization } = useGetAllVisualizationQuery({ page: page, size: size, title: title});
+    const [title, setTitle] = useState('')
+    const { data: visualization } = useGetAllVisualizationQuery({ page: page, size: size, title: title });
     console.log(visualization)
 
 
@@ -34,14 +27,14 @@ const Analysis = () => {
             <div>
                 <p className={'text-xl font-semibold text-primary-color mb-2'}>Total Visualization: {visualization?.count}</p>
                 <div className={'flex justify-between items-center'}>
-                <Input startContent={<BiSearch />} placeholder={'Search users ...'} onValueChange={setTitle} className={'w-1/3 my-3'}
-                       classNames={{
-                           inputWrapper: [
-                               'rounded-full'
-                           ]
-                       }}
-                       variant={'bordered'} size={'sm'} color={'primary'} />
-            </div>
+                    <Input startContent={<BiSearch />} placeholder={'Search users ...'} onValueChange={setTitle} className={'w-1/3 my-3'}
+                        classNames={{
+                            inputWrapper: [
+                                'rounded-full'
+                            ]
+                        }}
+                        variant={'bordered'} size={'sm'} color={'primary'} />
+                </div>
                 <div className={'grid grid-cols-1'}>
                     <Table>
                         <TableHeader>

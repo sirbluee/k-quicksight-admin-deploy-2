@@ -1,10 +1,10 @@
-import {createApi} from "@reduxjs/toolkit/query/react";
-import {apiSlice} from "@/store/api/apiSlice";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { apiSlice } from "@/store/api/apiSlice";
 
-export const visualizationApiSlice  = apiSlice.injectEndpoints({
+export const visualizationFeature = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getAllVisualization: builder.query({
-            query: ({page, size, title}) => ({
+            query: ({ page, size, title }) => ({
                 url: `dashboards/?p=${page}&size=${size}&title=${title}`,
                 method: 'GET',
             }),
@@ -14,4 +14,4 @@ export const visualizationApiSlice  = apiSlice.injectEndpoints({
     })
 })
 
-export const {useGetAllVisualizationQuery} = visualizationApiSlice;
+export const { useGetAllVisualizationQuery } = visualizationFeature;
