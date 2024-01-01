@@ -26,7 +26,7 @@ export default function SummaryDash() {
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-lg p-4 shadow-md flex justify-items-center items-center gap-4 hover:animate-appearance-in w-96">
+                        <div className="bg-white rounded-lg p-4 shadow-md flex justify-items-center items-center gap-4 hover:animate-appearance-in">
                             <div>
                                 <Image width={100} height={100}
                                        src={"/assets/admin-icon/bar.svg"} alt="user-icon"/>
@@ -38,7 +38,7 @@ export default function SummaryDash() {
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-lg p-4 shadow-md flex justify-items-center items-center gap-4 hover:animate-appearance-in w-96">
+                        <div className="bg-white rounded-lg p-4 shadow-md flex justify-items-center items-center gap-4 hover:animate-appearance-in">
                             <div>
                                 <Image width={100} height={100}
                                        src={"/assets/admin-icon/pie.svg"} alt="user-icon"/>

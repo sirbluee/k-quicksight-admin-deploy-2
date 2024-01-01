@@ -6,7 +6,8 @@ import { Button, Spinner } from "@nextui-org/react";
 import Link from "next/link";
 import Image from "next/image";
 import authentication from "@assets/images/authentication.png";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
+import SidebarAdmin from "@/components/Table/SidebarAdmin";
 
 
 // export const metadata = {
@@ -53,7 +54,11 @@ export default function DashboardRootLayout({ children }) {
     );
   } else {
     content = (
-      <section className={"md:pl-[20%] lg:pl-[18%] py-24 pr-[3%]"}>{children}</section>
+
+      <section className={"md:pl-[20%] lg:pl-[18%] py-24 pr-[3%]"}>
+        <SidebarAdmin />
+        {children}
+      </section>
     );
   }
   return content;

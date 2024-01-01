@@ -23,7 +23,7 @@ export default function SidebarAdmin(){
 
 
     return(
-        <div className={`${pathname.startsWith('/admin') ? '' : 'hidden'} fixed top-0 left-0 z-40 h-screen shadow-md transition-transform -translate-x-full sm:translate-x-0 p-3 space-y-2 w-60 dark:bg-gray-900 dark:text-gray-100`}>
+        <div className={`${pathname.startsWith('/admin') ? '' : 'hidden'} fixed top-0 left-0 z-40 h-screen bg-white shadow-md transition-transform -translate-x-full sm:translate-x-0 p-3 space-y-2 w-56 dark:bg-gray-900 dark:text-gray-100`}>
             <div className="flex items-center p-2 space-x-4">
                 <Image unoptimized width={50} height={50} src={generateBashURL(user?.data?.avatar)} alt="amdin profile" className="w-14 h-14 rounded-full object-cover dark:bg-gray-500" />
                 <div>
@@ -38,7 +38,7 @@ export default function SidebarAdmin(){
                     <li className="dark:bg-gray-800 dark:text-gray-50">
                         <Link rel="noopener noreferrer" href="/admin/dashboard" className="flex items-center p-2 space-x-3 rounded-md hover:bg-primary-color hover:text-white">
                             <FiBox/>
-                            <span>Dashboard</span>
+                            <span>Overview</span>
                         </Link>
                     </li>
                     <li>

@@ -15,22 +15,11 @@ import { MdDelete } from "react-icons/md";
 import { CiCircleRemove } from "react-icons/ci";
 import ModalUpdateTutorial from "@/app/admin/tutorial/components/ModalUpdateTutorial";
 import moment from "moment";
-import {BiSearch} from "react-icons/bi";
-
+import { BiSearch } from "react-icons/bi";
+import ModelDeleteTutorail from "@/app/admin/tutorial/components/DeleteModal";
+import { HiOutlineDotsHorizontal } from "react-icons/hi";
 
 export default function TutorialsTable() {
-
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const [backdrop, setBackdrop] = React.useState('opaque')
-    const [deleteId, setDeleteId] = React.useState(null)
-
-    const handleOpen = (backdrop, id) => {
-        console.log("id: ", id);
-        setDeleteId(id);
-        setBackdrop(backdrop)
-        onOpen();
-    }
-
     const [page, setPage] = useState(1);
     const [size, setSize] = useState(10);
     const [title, setTitle] = useState("");
@@ -41,12 +30,12 @@ export default function TutorialsTable() {
         isError,
         isSuccess,
     } = useGetTutorialsQuery({ page, size, title });
-    console.log(tutorials)
-    const [deleteTutorial,{ 
-            isLoading: isLoadingDeleteTutorials,
-            isError: isDeleteError,
-            isSuccess: isSuccessDeleteTutorial
-        }] = useDeleteTutorialsMutation();
+
+    const [deleteTutorial, {
+        isLoading: isLoadingDeleteTutorials,
+        isError: isDeleteError,
+        isSuccess: isSuccessDeleteTutorial
+    }] = useDeleteTutorialsMutation();
 
     const handlePageChange = (page) => {
         setPage(page);
@@ -65,9 +54,9 @@ export default function TutorialsTable() {
         await deleteTutorial(deleteId);
         toast.success("Delete Tutorial Success!");
     }
-    const TruncateText=(text, wordLimit )=> {
+    const TruncateText = (text, wordLimit) => {
         const words = text.split(' ');
-    
+
         if (words.length > wordLimit) {
             return words.slice(0, wordLimit).join(' ') + '...';
         }
@@ -88,38 +77,15 @@ export default function TutorialsTable() {
                 pauseOnHover
                 theme="light"
             />
-            <Modal backdrop={backdrop} isOpen={isOpen} onClose={onClose}>
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader className="flex flex-col gap-1 text-center">Are you sure you want to delete this tutorial?</ModalHeader>
-                            <ModalBody className="flex justify-center items-center">
-                                <CiCircleRemove size={200} color="red" />
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button color="danger" variant="light" onPress={onClose}>
-                                    Close
-                                </Button>
-                                <Button color="danger" onPress={onClose} onClick={() => handleDeleteTutorial()}
-                                >
-                                    Delete
-                                </Button>
-
-
-                            </ModalFooter>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
             {/* inser modal */}
             <div className="rounded-2xl flex items-center justify-between w-full mb-5 ">
                 <Input startContent={<BiSearch />} placeholder={'Search users ...'} value={title} onValueChange={setTitle} className={'w-1/3 my-3'}
-                       classNames={{
-                           inputWrapper: [
-                               'rounded-3xl'
-                           ]
-                       }}
-                       variant={'bordered'} size={'sm'} color={'primary'} />
+                    classNames={{
+                        inputWrapper: [
+                            'rounded-3xl'
+                        ]
+                    }}
+                    variant={'bordered'} size={'sm'} color={'primary'} />
                 <div className="flex gap-4 items-center">
                     <ModalAddNew />
                 </div>
@@ -140,17 +106,13 @@ export default function TutorialsTable() {
                         <TableRow key={index}>
                             <TableCell>{item.title}</TableCell>
                             <TableCell>{item.published_by.username}</TableCell>
-                            <TableCell className={"overflow-hidden whitespace-nowrap"}>{TruncateText(item?.description,10)}</TableCell>
+                            <TableCell className={"overflow-hidden whitespace-nowrap"}>{TruncateText(item?.description, 10)}</TableCell>
                             <TableCell>
                                 {moment(item.created_at).format("YYYY-MM-DD")}
                             </TableCell>
-                            <TableCell>
-                                <ModalUpdateTutorial tutorialId={item.id}/>
-                                <Button color="danger" className="ml-4" variant="bordered" onPress={() => handleOpen("blur", item.id)}
-                                     >
-                                    <MdDelete />
-                                </Button>
-                               
+                            <TableCell className={'flex gap-4'}>
+                                <ModelDeleteTutorail deleteId={item.id} />
+                                <ModalUpdateTutorial tutorialId={item.id} />
                             </TableCell>
                         </TableRow>
                     )

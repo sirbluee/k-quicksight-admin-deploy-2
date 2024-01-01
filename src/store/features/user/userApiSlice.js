@@ -30,6 +30,14 @@ export const userApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: ["User"],
         }),
         getAllUser: builder.query({
+            query: () => ({
+                url: `users/`,
+                method: 'GET',
+            }),
+            keepUnusedDataFor: 5,
+            providesTags: ["User"],
+        }),
+        getAllUserSearch: builder.query({
             query: ({page, size, username}) => ({
                 url: `users/list/?p=${page}&size=${size}&&username=${username}`,
                 method: 'GET',

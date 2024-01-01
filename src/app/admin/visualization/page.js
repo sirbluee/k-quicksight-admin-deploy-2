@@ -8,7 +8,8 @@ import {Input, Pagination, Select, SelectItem} from "@nextui-org/react";
 import Detail from "@/app/admin/tutorial/Request/[id]/page";
 import moment from 'moment';
 import {BiSearch} from "react-icons/bi";
-import { useGetAllVisualizationQuery } from '@/store/features/visualization/Visualization';
+import { useGetAllVisualizationQuery } from '@/store/features/Visualization/Visualization';
+
 
 const Analysis = () => {
 

@@ -12,7 +12,7 @@ import {
     Pagination,
     SelectItem, Select, Input
 } from "@nextui-org/react";
-import {useGetAllUserQuery} from "@/store/features/user/userApiSlice";
+import {useGetAllUserQuery, useGetAllUserSearchQuery} from "@/store/features/user/userApiSlice";
 import {getTrimIntoColumnOnlyDate} from "@/utils/generateURL";
 import {FaPencilAlt} from "react-icons/fa";
 import {MdDeleteSweep} from "react-icons/md";
@@ -46,7 +46,7 @@ export default function TableUser() {
     const [size, setSize] = useState(10);
     const [username, setUsername] = useState("");
 
-    const {data:allUser, isLoading} = useGetAllUserQuery({page: page, size: size, username: username});
+    const {data:allUser, isLoading} = useGetAllUserSearchQuery({page: page, size: size, username: username});
 
     const handlePageChange = (page) => {
         setPage(page);
@@ -80,7 +80,7 @@ export default function TableUser() {
                 </TableHeader>
                 <TableBody>
                     {
-                        allUser?.results.map((item, index) => (
+                        allUser?.results?.map((item, index) => (
                             <TableRow key={index}>
                                 <TableCell>{item.username}</TableCell>
                                 <TableCell>{item.email}</TableCell>

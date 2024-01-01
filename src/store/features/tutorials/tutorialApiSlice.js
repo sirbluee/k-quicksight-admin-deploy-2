@@ -2,7 +2,7 @@ import { apiSlice } from "@/store/api/apiSlice";
 
 export const userApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        
+
         getTutorials: builder.query({
             query: ({ page, size, title }) => `tutorials/?p=${page}&size=${size}&title=${title}`,
             keepUnusedDataFor: 5, // keep unused data in cache for 5 seconds
@@ -14,7 +14,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
             providesTags: ["Tutorial"], // provideTags are used for updating cache
         }),
         getRequestTutorialById: builder.query({
-            query: ({id}) => `request_tutorials/${id}/`,
+            query: ({ id }) => `request_tutorials/${id}/`,
             keepUnusedDataFor: 5,
             providesTags: ["Tutorial"]
         }),
@@ -25,7 +25,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["Tutorial"],
         }),
-        
+
         createTutorial: builder.mutation({
             query: ({ data }) => ({
                 url: `tutorials/`,
@@ -37,10 +37,10 @@ export const userApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["Tutorial"],
         }),
-        
+
         getTutorialById: builder.query({
             query: (id) => `tutorials/${id}/`,
-            keepUnusedDataFor: 5, 
+            keepUnusedDataFor: 5,
             providesTags: ["Tutorial"],
         }),
 
