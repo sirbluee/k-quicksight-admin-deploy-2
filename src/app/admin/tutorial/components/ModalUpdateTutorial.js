@@ -9,10 +9,10 @@ export default function ModalUpdateTutorial({ tutorialId }) {
 
     return (
         <>
-            <Button color="success" variant="bordered" onPress={onOpen}
+            <DropdownItem onPress={onOpen}
             >
-                <FaRegEdit />
-            </Button>
+                View
+            </DropdownItem>
 
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
                 <ModalContent className="m-28">

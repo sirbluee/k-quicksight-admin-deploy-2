@@ -71,14 +71,10 @@ export default function TableUser() {
             </div>
             <Table aria-label="Example static collection table">
                 <TableHeader>
-                    <TableColumn>ID</TableColumn>
                     <TableColumn>USERNAME</TableColumn>
-                    <TableColumn>FULLNAME</TableColumn>
                     <TableColumn>EMAIL</TableColumn>
                     <TableColumn>GENDER</TableColumn>
-                    <TableColumn>PHONE NUMBER</TableColumn>
                     <TableColumn>ADDRESS</TableColumn>
-                    <TableColumn>CREATED AT</TableColumn>
                     <TableColumn>ROLES</TableColumn>
                     <TableColumn>ACTIONS</TableColumn>
                 </TableHeader>
@@ -86,14 +82,10 @@ export default function TableUser() {
                     {
                         allUser?.results.map((item, index) => (
                             <TableRow key={index}>
-                                <TableCell>{item.id}</TableCell>
                                 <TableCell>{item.username}</TableCell>
-                                <TableCell>{item.full_name}</TableCell>
                                 <TableCell>{item.email}</TableCell>
                                 <TableCell className={'text-primary-color'}>{item.gender || 'unKnown'}</TableCell>
-                                <TableCell>{item.phone_number || 'unKnown'}</TableCell>
                                 <TableCell>{item.address || 'unKnown'}</TableCell>
-                                <TableCell>{getTrimIntoColumnOnlyDate(item.created_at)}</TableCell>
                                 <TableCell>
                                     {
                                         item.roles.map((item, index) => (
