@@ -1,20 +1,20 @@
 'use client'
 
 import Image from "next/image";
-import {FiBarChart, FiBox, FiDatabase, FiPaperclip, FiUser, FiUsers, FiVideo} from "react-icons/fi";
+import { FiBarChart, FiBox, FiDatabase, FiPaperclip, FiUser, FiUsers, FiVideo } from "react-icons/fi";
 import Link from "next/link";
-import {useDispatch} from "react-redux";
-import {logout} from "@/store/admin/authSlice";
-import {usePathname, useRouter} from "next/navigation";
-import {useGetUserQuery} from "@/store/features/user/userApiSlice";
-import {generateBashURL} from "@/utils/generateURL";
-import {useEffect} from "react";
+import { useDispatch } from "react-redux";
+import { logout } from "@/store/admin/authSlice";
+import { usePathname, useRouter } from "next/navigation";
+import { useGetUserQuery } from "@/store/features/user/userApiSlice";
+import { generateBashURL } from "@/utils/generateURL";
+import { useEffect } from "react";
 
-export default function SidebarAdmin(){
+export default function SidebarAdmin() {
 
     const dispatch = useDispatch();
     const pathname = usePathname();
-    const {data:user, isLoading, refetch: userRefetch} = useGetUserQuery();
+    const { data: user, isLoading, refetch: userRefetch } = useGetUserQuery();
     const router = useRouter();
 
     useEffect(() => {
@@ -22,7 +22,7 @@ export default function SidebarAdmin(){
     }, [userRefetch, user]);
 
 
-    return(
+    return (
         <div className={`${pathname.startsWith('/admin') ? '' : 'hidden'} fixed top-0 left-0 z-40 h-screen bg-white shadow-md transition-transform -translate-x-full sm:translate-x-0 p-3 space-y-2 w-56 dark:bg-gray-900 dark:text-gray-100`}>
             <div className="flex items-center p-2 space-x-4">
                 <Image unoptimized width={50} height={50} src={generateBashURL(user?.data?.avatar)} alt="amdin profile" className="w-14 h-14 rounded-full object-cover dark:bg-gray-500" />
@@ -37,37 +37,37 @@ export default function SidebarAdmin(){
                 <ul className="pt-2 pb-4 space-y-1 text-lg">
                     <li className="dark:bg-gray-800 dark:text-gray-50">
                         <Link rel="noopener noreferrer" href="/admin/dashboard" className="flex items-center p-2 space-x-3 rounded-md hover:bg-primary-color hover:text-white">
-                            <FiBox/>
+                            <FiBox />
                             <span>Overview</span>
                         </Link>
                     </li>
                     <li>
                         <Link rel="noopener noreferrer" href="/admin/visualization" className="flex items-center p-2 space-x-3 rounded-md hover:bg-primary-color hover:text-white">
-                            <FiBarChart/>
+                            <FiBarChart />
                             <span>Visualization</span>
                         </Link>
                     </li>
                     <li>
                         <Link rel="noopener noreferrer" href="/admin/analysis" className="flex items-center p-2 space-x-3 rounded-md hover:bg-primary-color hover:text-white">
-                            <FiPaperclip/>
+                            <FiPaperclip />
                             <span>Analysis</span>
                         </Link>
                     </li>
                     <li>
                         <Link rel="noopener noreferrer" href="/admin/data" className="flex items-center p-2 space-x-3 rounded-md hover:bg-primary-color hover:text-white">
-                            <FiDatabase/>
+                            <FiDatabase />
                             <span>Data</span>
                         </Link>
                     </li>
                     <li>
                         <Link rel="noopener noreferrer" href="/admin/user" className="flex items-center p-2 space-x-3 rounded-md hover:bg-primary-color hover:text-white">
-                            <FiUser/>
+                            <FiUser />
                             <span>User</span>
                         </Link>
                     </li>
                     <li>
                         <Link rel="noopener noreferrer" href="/admin/tutorial" className="flex items-center p-2 space-x-3 rounded-md hover:bg-primary-color hover:text-white">
-                            <FiVideo/>
+                            <FiVideo />
                             <span>Tutorial</span>
                         </Link>
                     </li>

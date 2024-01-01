@@ -1,7 +1,7 @@
 import {createApi} from "@reduxjs/toolkit/query/react";
 import {apiSlice} from "@/store/api/apiSlice";
 
-export const visualization  = apiSlice.injectEndpoints({
+export const visualizationApiSlice  = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getAllVisualization: builder.query({
             query: ({page, size, title}) => ({
@@ -14,4 +14,5 @@ export const visualization  = apiSlice.injectEndpoints({
     })
 })
 
-export const {useGetAllVisualizationQuery} = visualization;
+export const {useGetAllVisualizationQuery} = visualizationApiSlice;
+
