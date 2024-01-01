@@ -15,3 +15,4 @@ export const visualizationApiSlice  = apiSlice.injectEndpoints({
 })
 
 export const {useGetAllVisualizationQuery} = visualizationApiSlice;
+
