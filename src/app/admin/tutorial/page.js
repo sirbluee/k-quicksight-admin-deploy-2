@@ -14,7 +14,7 @@ const item = [
     },
     {
         key: '2',
-        label: ' Request tutorial',
+        label: ' Request Tutorial',
         children: <RequestTutorial />,
     }
 ]

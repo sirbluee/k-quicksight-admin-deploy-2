@@ -9,6 +9,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { useGetUserQuery } from "@/store/features/user/userApiSlice";
 import { generateBashURL } from "@/utils/generateURL";
 import { useEffect } from "react";
+import { RiMailSendFill } from "react-icons/ri";
+
 
 export default function SidebarAdmin() {
 
@@ -69,6 +71,12 @@ export default function SidebarAdmin() {
                         <Link rel="noopener noreferrer" href="/admin/tutorial" className="flex items-center p-2 space-x-3 rounded-md hover:bg-primary-color hover:text-white">
                             <FiVideo />
                             <span>Tutorial</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link rel="noopener noreferrer" href="/admin/contact-us" className="flex items-center p-2 space-x-3 rounded-md hover:bg-primary-color hover:text-white">
+                            <RiMailSendFill  />
+                            <span>Contact Us</span>
                         </Link>
                     </li>
                 </ul>

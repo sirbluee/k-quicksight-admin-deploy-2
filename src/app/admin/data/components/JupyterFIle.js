@@ -40,7 +40,7 @@ const JupyterFIle = () => {
     return (
         <section className={'p-5'}>
             <div className={'flex justify-between items-center'}>
-                <p className={'text-xl font-semibold text-primary-color mb-2'}>Total Jupyter files: {jupyter?.count}</p>
+                <p className={'text-xl font-semibold text-primary-color mb-2'}>Total Jupyter Files: {jupyter?.count}</p>
                 <div>
                     <input
                         id="input-jupyter"
