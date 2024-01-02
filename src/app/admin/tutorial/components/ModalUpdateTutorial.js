@@ -10,7 +10,7 @@ export default function ModalUpdateTutorial({ tutorialId }) {
 
     return (
         <>
-            <Button variant="solid" color='primary' className="w-full flex justify-center items-center gap-3" onClick={onOpen}><FaRegEdit /> edit</Button>
+            <Button variant="solid" color='primary' className="w-full flex justify-center items-center gap-3" onClick={onOpen}><FaRegEdit />Edit</Button>
 
             <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
                 <ModalContent className="m-28">

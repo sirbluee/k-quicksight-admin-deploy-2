@@ -14,19 +14,26 @@ import {useGetUserQuery} from "@/store/features/user/userApiSlice";
 import DeleteModal from "@/app/admin/data/components/deleteModal";
 import {useRouter} from "next/navigation";
 import {useGetSampleDatasetQuery} from "@/store/features/sample/sampleApiSlice";
+import DeleteModalSampleDataset from './DeleteModalSampleDataset';
+
+import { useUploadSampleDatasetMutation } from '@/store/features/sample/sampleApiSlice';
+import ViewDetailSampleDataset from './ViewDetailModalSampleDataset';
+import { toast } from 'react-toastify';
 const SampleDataset = () => {
     const {data:user} = useGetUserQuery();
     const [selectedFile, setSelectedFile] = useState(null);
     const fileInputRef = useRef(null);
-    const [uploadJupyter] = useUploadJupyterMutation();
+    const [uploadSampleDataset] = useUploadSampleDatasetMutation();
     const router = useRouter();
     const [currentPage, setCurrentPage] = useState(1);
     const {data:jupyter} = useGetJupyterFileQuery({page: currentPage, size: 100, filename: ''});
     const {data:sample} = useGetSampleDatasetQuery({page: currentPage, size: 100, title: ''});
-    console.log("sample dataset : ",sample)
+
     const handleFileChange = async (event) => {
         const file = event.target.files[0];
-        const response = await uploadJupyter({file: file, userId: user?.data.id})
+        const response = await uploadSampleDataset({file: file, userId: user?.data.id})
+        toast.success("Upload Sample Dataset Successfully")
+
         setSelectedFile(response);
     };
     const handleButtonClick = () => {
@@ -40,7 +47,7 @@ const SampleDataset = () => {
     return (
         <section className={'p-5'}>
             <div className={'flex justify-between items-center'}>
-                <h3 className={'text-primary-color'}>All Sample Dataset</h3>
+                <p className={'text-xl font-semibold text-primary-color mb-2'}>Total Sample Dataset: {sample?.count}</p>
                 <div>
                     <input
                         id="input-jupyter"
@@ -65,8 +72,9 @@ const SampleDataset = () => {
                                 <p>{getTrimIntoColumnOnlyDate(item.created_at)} - {formatBytes(item.size)}</p>
                             </div>
                             <div className={'grid grid-cols-2 gap-2 items-center'}>
-                                <DeleteModal fileId={item.id} filename={item.file} />
-                                <Button onClick={() => router.push(`${process.env.NEXT_PUBLIC_BASE_TEMPLATE_JUPYTER}${item.filename}/`)} size={'sm'} variant={'ghost'} color={'primary'}>View detail</Button>
+                                <DeleteModalSampleDataset fileId={item.id} filename={item.file} />
+                                {/* <Button onClick={() => router.push(`${process.env.NEXT_PUBLIC_BASE_TEMPLATE_JUPYTER}${item.filename}/`)} size={'sm'} variant={'ghost'} color={'primary'}>View detail</Button> */}
+                                <ViewDetailSampleDataset uuid={item?.uuid} />
                             </div>
                         </div>
                     ))

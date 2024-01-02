@@ -38,17 +38,17 @@ const Tab_Data = () => {
     const [items, setItems] = useState([
         {
             key: '1',
-            label: 'Jupyter files',
+            label: 'Jupyter Files',
             children: <JupyterFIle />,
         },
         {
             key: '2',
-            label: 'Sample dataset',
+            label: 'Sample Dataset',
             children: <SampleDataset/>,
         },
         {
             key: '3',
-            label: 'Sample analysis',
+            label: 'Sample Analysis',
             children: <SampleAnalysis/>,
         },
     ]);

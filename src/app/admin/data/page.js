@@ -2,6 +2,8 @@ import React from 'react';
 import Tab_Data from "@/app/admin/data/components/Tab";
 import jupyter from '@assets/images/Project_66-02.jpg'
 import Image from "next/image";
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const Data = () => {
     return (
@@ -13,6 +15,18 @@ const Data = () => {
             {/*    </div>*/}
             {/*    <Image src={jupyter} alt={'file'} />*/}
             {/*</div>*/}
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
             <Tab_Data />
         </div>
     );
