@@ -59,7 +59,7 @@ export default function TableUser() {
 
     return (
         <>
-            <p className={'text-xl font-semibold text-primary-color mb-2'}>Total User: {allUser?.count}</p>
+            <p className={'text-xl font-semibold text-primary-color mb-2 mt-10'}>Total User: {allUser?.count}</p>
             <div className={'flex justify-between items-center'}>
                 <Input startContent={<BiSearch />} placeholder={'Search users ...'} value={username} onValueChange={setUsername} className={'w-1/3 my-3'}
                        classNames={{

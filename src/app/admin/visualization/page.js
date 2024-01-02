@@ -23,8 +23,8 @@ const Analysis = () => {
     // Api is not for admin!
 
     return (
-        <div className={'p-10'}>
-            <div>
+        <div className={"py-10 pr-20"}>
+        <div>
                 <p className={'text-xl font-semibold text-primary-color mb-2'}>Total Visualization: {visualization?.count}</p>
                 <div className={'flex justify-between items-center'}>
                     <Input startContent={<BiSearch />} placeholder={'Search users ...'} onValueChange={setTitle} className={'w-1/3 my-3'}

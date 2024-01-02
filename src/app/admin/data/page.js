@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Data = () => {
     return (
-        <div>
+        <div className={"py-10 pr-20"}>
             {/*<div className={'w-full grid grid-cols-2 justify-between items-center'}>*/}
             {/*    <div>*/}
             {/*        <h3 className={'text-primary-color'}>Data files</h3>*/}

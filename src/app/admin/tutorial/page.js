@@ -20,10 +20,12 @@ const item = [
 ]
 
 const Tutorial = () => (
-    <Tabs
-        defaultActiveKey="1"
-        items={item}
-    />
+    <div className={"py-10 pr-20"}>
+        <Tabs
+            defaultActiveKey="1"
+            items={item}
+        />
+    </div>
 );
 export default Tutorial;
 

@@ -55,7 +55,7 @@ export default function DashboardRootLayout({ children }) {
   } else {
     content = (
 
-      <section className={"md:pl-[20%] lg:pl-[18%] py-24 pr-[3%]"}>
+      <section className={"md:pl-[100%] lg:pl-[18%] py-0 pr-[3%]"}>
         <SidebarAdmin />
         {children}
       </section>

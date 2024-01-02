@@ -38,7 +38,7 @@ const Analysis = () => {
         }
     }
     return (
-        <div className={'p-10'}>
+        <div className={"py-10 pr-20"}>
             <div>
                 <p className={'text-xl font-semibold text-primary-color mb-2'}>Total Analysis: {analysis?.count}</p>
                 <div className={'flex justify-between items-center'}>

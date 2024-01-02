@@ -35,7 +35,7 @@ const Analysis = () => {
         }
     }
     return (
-        <div className={'p-10'}>
+        <div className={"py-10 pr-20"}>
 
             <ToastContainer
                 position="top-right"
