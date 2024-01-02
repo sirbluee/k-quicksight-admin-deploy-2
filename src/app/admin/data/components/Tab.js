@@ -10,6 +10,8 @@ import { CSS } from '@dnd-kit/utilities';
 import React, { useState } from 'react';
 import { Tabs } from 'antd';
 import JupyterFIle from "@/app/admin/data/components/JupyterFIle";
+import SampleAnalysis from "@/app/admin/data/components/SampleAnalysis";
+import SampleDataset from "@/app/admin/data/components/SampleDataset";
 const DraggableTabNode = ({ className, ...props }) => {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
         id: props['data-node-key'],
@@ -42,12 +44,12 @@ const Tab_Data = () => {
         {
             key: '2',
             label: 'Sample dataset',
-            children: 'Sample dataset',
+            children: <SampleDataset/>,
         },
         {
             key: '3',
             label: 'Sample analysis',
-            children: 'Sample analysis',
+            children: <SampleAnalysis/>,
         },
     ]);
     const sensor = useSensor(PointerSensor, {

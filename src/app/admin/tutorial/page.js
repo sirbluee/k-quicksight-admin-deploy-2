@@ -21,7 +21,7 @@ const item = [
 
 const Tutorial = () => (
     <Tabs
-        defaultActiveKey="2"
+        defaultActiveKey="1"
         items={item}
     />
 );
