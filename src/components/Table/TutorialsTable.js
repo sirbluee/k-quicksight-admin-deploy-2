@@ -78,6 +78,8 @@ export default function TutorialsTable() {
                 theme="light"
             />
             {/* inser modal */}
+            <p className={'text-xl font-semibold text-primary-color mb-2'}>Total Tutorial: {tutorials?.count}</p>
+
             <div className="rounded-2xl flex items-center justify-between w-full mb-5 ">
                 <Input startContent={<BiSearch />} placeholder={'Search users ...'} value={title} onValueChange={setTitle} className={'w-1/3 my-3'}
                     classNames={{
@@ -89,7 +91,6 @@ export default function TutorialsTable() {
                 <div className="flex gap-4 items-center">
                     <ModalAddNew />
                 </div>
-
             </div>
             <Table aria-label="Example static collection table">
                 <TableHeader>

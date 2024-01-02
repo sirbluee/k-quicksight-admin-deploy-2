@@ -9,7 +9,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
             providesTags: ["Tutorial"], // provideTags are used for updating cache
         }),
         getRequestTutorials: builder.query({
-            query: ({ page, size }) => `request_tutorials/?p=${page}&size=${size}`,
+            query: ({ page, size,title }) => `request_tutorials/?p=${page}&size=${size}&subject=${title}`,
             keepUnusedDataFor: 5, // keep unused data in cache for 5 seconds
             providesTags: ["Tutorial"], // provideTags are used for updating cache
         }),
